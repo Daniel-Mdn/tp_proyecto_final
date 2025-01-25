@@ -8,7 +8,8 @@
         {
             "name": "tp_proyecto_final",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug"
         },
         {
             "name": "tp_proyecto_final (profile mode)",
