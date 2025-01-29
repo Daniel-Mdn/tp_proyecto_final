@@ -15,7 +15,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
-
     return Scaffold(
       body: Container(
         color: Colors.black,
@@ -133,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                                         .width *
                                                     0.6,
                                               )),
-                                              child: const Text('Login'),
+                                              child: const Text('Ingresar'),
                                             ),
                                             const SizedBox(height: 16),
                                             OutlinedButton(
