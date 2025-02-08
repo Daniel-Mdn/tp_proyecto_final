@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
+import 'package:tp_proyecto_final/services/auth_service.dart';
+import 'package:tp_proyecto_final/services/storage_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +12,50 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formGlobalKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Instancia del servicio de autenticación
+  final AuthService _authService = AuthService(storageService: StorageService());
+
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    if (!_formGlobalKey.currentState!.validate()) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    final success = await _authService.login(email, password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (success) {
+      // Si el login es exitoso, navega a la pantalla principal o donde requieras
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      setState(() {
+        _errorMessage = 'Error al iniciar sesión, verifica tus credenciales.';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                                       CrossAxisAlignment.stretch,
                                   children: [
                                     TextFormField(
+                                      controller: _emailController,
                                       decoration: InputDecoration(
                                         labelText: 'Usuario o Email',
                                         floatingLabelBehavior:
@@ -85,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                                     const SizedBox(height: 16),
                                     TextFormField(
+                                      controller: _passwordController,
                                       decoration: InputDecoration(
                                         labelText: 'Contraseña',
                                         floatingLabelBehavior:
@@ -112,19 +160,19 @@ class _LoginPageState extends State<LoginPage> {
                                       children: [
                                         Column(
                                           children: [
+                                            if (_errorMessage != null)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 16),
+                                                child: Text(
+                                                  _errorMessage!,
+                                                  style: const TextStyle(
+                                                      color: Colors.red),
+                                                ),
+                                              ),
                                             FilledButton(
-                                              onPressed: () {
-                                                if (!_formGlobalKey
-                                                    .currentState!
-                                                    .validate()) {
-                                                  return;
-                                                }
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const HomePage()));
-                                              },
+                                              onPressed:
+                                                  _isLoading ? null : _login,
                                               style: FilledButton.styleFrom(
                                                   fixedSize: Size.fromWidth(
                                                 MediaQuery.of(context)
@@ -132,7 +180,10 @@ class _LoginPageState extends State<LoginPage> {
                                                         .width *
                                                     0.6,
                                               )),
-                                              child: const Text('Ingresar'),
+                                              child: _isLoading
+                                                  ? const CircularProgressIndicator()
+                                                  : const Text(
+                                                      'Iniciar sesión'),
                                             ),
                                             const SizedBox(height: 16),
                                             OutlinedButton(

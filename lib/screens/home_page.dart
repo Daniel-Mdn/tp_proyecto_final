@@ -53,9 +53,10 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         for (var item in usersList)
                           ListTile(
-                              leading:
-                                  Image.asset('imgs/without_img.png'),
-                              title: Text(item.nombre))
+                            leading: Image.asset('imgs/without_img.png'),
+                            title: Text('${item.nombre} - ${item.apellido} '),
+                            subtitle: Text(item.email),
+                          )
                       ],
                     );
                   } else if (snapshot.hasError) {

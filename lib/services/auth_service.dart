@@ -1,32 +1,64 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:tp_proyecto_final/services/storage_service.dart';
 
-import 'package:dio/dio.dart';
+class AuthService {
+  // Cambia esta URL por la de tu backend
+  final String baseUrl = 'https://tubackend.com/api';
+  final StorageService storageService;
 
-class Request {
-  static final Request _instance = Request._internal();
-  Request._internal();
-  static Request get instance => _instance;
-  
-  // add base options
-  
-  final Dio dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://<your domain>.com',
-     // you can keep this blank
-      headers: {
-        'Authorization': 'Bearer noToken',
-      },
-    ),
-  )..interceptors.add(
-    // add log interceptors to log the request headers
-      LogInterceptor(
-        requestHeader: true,
-      ),
-    );
-
-  // make separate method for updating the token
-  void updateSession(String updatedToken) {
-    dio.options.headers = {
-      'Authorization': 'Bearer $updatedToken',
-    };
+  Future<http.Response> simulateLogin() async {
+    // key for encript = qwertyuiopasdfghjklzxcvbnm123456
+    final resp = await http.get(Uri.parse('./mockup_data/login.json'),
+        headers: {
+          "Strict-Transport-Security":
+              "max-age=63072000; includeSubDomains; preload"
+        });
+    return resp;
   }
+
+  /// Recupera el token almacenado
+  Future<String?> getToken() async {
+    return await storageService.read('jwt_token');
+  }
+
+  /// Cierra sesión eliminando el token
+  Future<void> logout() async {
+    await storageService.delete('jwt_token');
+  }
+
+  /// Método para iniciar sesión
+
+  Future<bool> login(String email, String password) async {
+    try {
+      final url = Uri.parse('$baseUrl/auth/login');
+
+      // Realiza la petición POST al backend
+      // final response = await http.post(
+      //   url,
+      //   headers: {'Content-Type': 'application/json'},
+      //   body: jsonEncode({'email': email, 'password': password}),
+      // );
+      final response = await simulateLogin();
+      // Si la autenticación es exitosa, el backend debería devolver un JWT
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+        if (token != null) {
+          // Almacena el token de forma segura
+          final result = await storageService.write(
+            'jwt_token',
+            token,
+          );
+          return result;
+        }
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  AuthService({required this.storageService});
 }

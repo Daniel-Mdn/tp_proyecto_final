@@ -10,7 +10,6 @@ class UserProvider {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       var usersList = UserModel.fromJson(jsonDecode(response.body));
-      print(usersList);
       return usersList;
     } else {
       // If the server did not return a 200 OK response,
@@ -26,11 +25,8 @@ class UserProvider {
       // then parse the JSON.
       try {
         var usersList = userModelFromJson(response.body);
-        print('usersList');
-        print(usersList);
         return usersList;
       } catch (e) {
-        print(e);
         return [];
       }
     } else {
