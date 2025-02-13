@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 
 class AuthService {
@@ -15,6 +16,21 @@ class AuthService {
               "max-age=63072000; includeSubDomains; preload"
         });
     return resp;
+  }
+
+  Future<UserModel> getUserLogger() async {
+    final response = await http.get(Uri.parse('./mockup_data/users.json'));
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+      var usersList = UserModel.fromJson(jsonDecode(response.body)[0]);
+      return usersList;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load users');
+    }
   }
 
   /// Recupera el token almacenado

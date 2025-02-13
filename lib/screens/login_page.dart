@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
+import 'package:tp_proyecto_final/services/user_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,7 +19,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   // Instancia del servicio de autenticación
-  final AuthService _authService = AuthService(storageService: StorageService());
+  final AuthService _authService =
+      AuthService(storageService: StorageService());
+
+  final _usersProvider = UserProvider();
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -30,30 +35,35 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _login() async {
-    if (!_formGlobalKey.currentState!.validate()) {
-      return;
-    }
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-
-    final success = await _authService.login(email, password);
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (success) {
-      // Si el login es exitoso, navega a la pantalla principal o donde requieras
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
+    try {
+      if (!_formGlobalKey.currentState!.validate()) {
+        return;
+      }
       setState(() {
-        _errorMessage = 'Error al iniciar sesión, verifica tus credenciales.';
+        _isLoading = true;
+        _errorMessage = null;
       });
+
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+
+      final success = await _authService.login(email, password);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (success) {
+        final futureUsersList = await _usersProvider.getUser();
+        // Si el login es exitoso, navega a la pantalla principal o donde requieras
+        context.go("/home");
+      } else {
+        setState(() {
+          _errorMessage = 'Error al iniciar sesión, verifica tus credenciales.';
+        });
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

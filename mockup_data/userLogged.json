@@ -1,0 +1,52 @@
+[
+	{
+		"id": 1,
+		"nombre": "Gray",
+		"apellido": "Crasswell",
+		"email": "gcrasswell0@virginia.edu",
+		"genero": "masculino",
+		"fecha_nacimiento": "2024-05-18T18:33:49Z",
+		"telefono": "197-407-2761",
+		"rol": "entrenador"
+	},
+	{
+		"id": 2,
+		"nombre": "Jean",
+		"apellido": "Vatini",
+		"email": "jvatini1@noaa.gov",
+		"genero": "masculino",
+		"fecha_nacimiento": "2024-10-19T20:10:53Z",
+		"telefono": "220-531-1344",
+		"rol": "cliente"
+	},
+	{
+		"id": 3,
+		"nombre": "Mitzi",
+		"apellido": "Grimsdike",
+		"email": "mgrimsdike2@fastcompany.com",
+		"genero": "femenino",
+		"fecha_nacimiento": "2024-06-04T02:44:32Z",
+		"telefono": "352-902-1036",
+		"rol": "entrenador"
+	},
+	{
+		"id": 4,
+		"nombre": "Theodore",
+		"apellido": "Lillo",
+		"email": "tlillo3@webeden.co.uk",
+		"genero": "masculino",
+		"fecha_nacimiento": "2024-09-09T02:01:36Z",
+		"telefono": "973-877-1995",
+		"rol": "cliente"
+	},
+	{
+		"id": 5,
+		"nombre": "Seamus",
+		"apellido": "Grabham",
+		"email": "sgrabham4@youtube.com",
+		"genero": "Genderfluid",
+		"fecha_nacimiento": "2024-08-15T08:58:24Z",
+		"telefono": "943-282-4364",
+		"rol": "cliente"
+	}
+]

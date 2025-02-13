@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tp_proyecto_final/helpers/app_colors.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
+import 'package:tp_proyecto_final/services/auth_service.dart';
+import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
 import 'package:tp_proyecto_final/widgets/section_card.dart';
 
@@ -12,7 +17,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _formGlobalKey = GlobalKey<FormState>();
+  final AuthService _authService =
+      AuthService(storageService: StorageService());
 
+  late Future<UserModel> userLogged;
   late Future<List<UserModel>> futureUsersList;
 
   @override
@@ -20,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     var usersProvider = UserProvider();
     futureUsersList = usersProvider.getUsers();
+    userLogged = _authService.getUserLogger();
   }
 
   @override
@@ -39,7 +48,65 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero, // Importante remover el padding
+          children: <Widget>[
+            FutureBuilder<UserModel>(
+              future: userLogged,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print('snapshot');
+                  print(snapshot);
+
+                  return DrawerHeader(
+                      decoration: const BoxDecoration(
+                        color: AppColors.primaryColor,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                alignment: Alignment.center,
+                                child: Image.asset('imgs/logo.png',
+                                    fit: BoxFit.cover),
+                              ),
+                              const Text('PINAF')
+                            ],
+                          ),
+                          const Text('ads'),
+                        ],
+                      ));
+                } else {
+                  return SnackBar(content: Text('${snapshot.error}'));
+                }
+              },
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Item 2'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(children: [
