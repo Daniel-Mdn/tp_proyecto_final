@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:tp_proyecto_final/helpers/app_material_theme.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/screens/login_page.dart';
+import 'package:tp_proyecto_final/screens/managments_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 
@@ -39,6 +40,10 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/home',
         builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: '/gestiones',
+        builder: (context, state) => const ManagmentsPage(),
       ),
     ],
   );
@@ -85,10 +90,10 @@ class _SplashPageState extends State<SplashPage> {
     // Espera 3 segundos
     await Future.delayed(splashDuration);
     _splashShown = true;
-
+    
     final token = await _authService.getToken();
 
-    if (token != null && token.isNotEmpty) {
+    if (token != null) {
       // Si hay token, navega a home
       if (mounted) context.go('/home');
     } else {

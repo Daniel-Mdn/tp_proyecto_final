@@ -1,0 +1,52 @@
+[
+	{
+		"id": 1,
+		"nombre": " sapien",
+		"objetivo": "ipsum dolor",
+		"duracion": 61,
+		"dificultad": "dificil",
+		"descripcion": "ligula nec sem duis aliquam",
+		"id_propietario": 71,
+		"fecha_creacion": "2024-11-28T05:37:20Z"
+	},
+	{
+		"id": 2,
+		"nombre": " justo",
+		"objetivo": "leo maecenas",
+		"duracion": 35,
+		"dificultad": "dificil",
+		"descripcion": "morbi odio odio elementum eu",
+		"id_propietario": 27,
+		"fecha_creacion": "2024-08-24T06:07:18Z"
+	},
+	{
+		"id": 3,
+		"nombre": "matt ullamcorper",
+		"objetivo": "suspendisse potenti",
+		"duracion": 90,
+		"dificultad": "facil",
+		"descripcion": "suscipit ligula in lacus curabitur",
+		"id_propietario": 57,
+		"fecha_creacion": "2024-05-04T15:26:21Z"
+	},
+	{
+		"id": 4,
+		"nombre": "gravi massa",
+		"objetivo": "hendrerit at",
+		"duracion": 86,
+		"dificultad": "facil",
+		"descripcion": "quam nec dui luctus rutrum",
+		"id_propietario": 15,
+		"fecha_creacion": "2024-11-12T23:47:09Z"
+	},
+	{
+		"id": 5,
+		"nombre": " consequat",
+		"objetivo": "ultrices phasellus",
+		"duracion": 51,
+		"dificultad": "dificil",
+		"descripcion": "quis lectus suspendisse potenti in",
+		"id_propietario": 77,
+		"fecha_creacion": "2024-04-14T11:01:22Z"
+	}
+]

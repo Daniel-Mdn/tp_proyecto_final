@@ -7,31 +7,27 @@ import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
-import 'package:tp_proyecto_final/widgets/app_bar_widget.dart';
 import 'package:tp_proyecto_final/widgets/drawer_widget.dart';
-import 'package:tp_proyecto_final/widgets/section_card.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class ManagmentsPage extends StatefulWidget {
+  const ManagmentsPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<ManagmentsPage> createState() => _ManagmentsPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _ManagmentsPageState extends State<ManagmentsPage> {
   final _formGlobalKey = GlobalKey<FormState>();
   final AuthService _authService =
       AuthService(storageService: StorageService());
 
-  // late Future<UserModel> userLogged;
-  late Future<List<UserModel>> futureUsersList;
+  late Future<List<UserModel>> futureRoutinesList;
 
   @override
   void initState() {
     super.initState();
     var usersProvider = UserProvider();
-    futureUsersList = usersProvider.getUsers();
-    // userLogged = _authService.getUserLogger();
+    futureRoutinesList = usersProvider.getUsers();
   }
 
   @override
@@ -40,13 +36,22 @@ class _HomePageState extends State<HomePage> {
     final ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLowest,
-      appBar: const AppBarWidget(),
+      appBar: AppBar(
+        title: const Text('PINAF'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_none),
+            onPressed: () {},
+          ),
+        ],
+      ),
       drawer: const DrawerWidget(),
       body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(children: [
             FutureBuilder<List<UserModel>>(
-                future: futureUsersList,
+                future: futureRoutinesList,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     var usersList = snapshot.data ?? [];

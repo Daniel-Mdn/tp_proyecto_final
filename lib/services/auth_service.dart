@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:tp_proyecto_final/model/jwt_token_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 
@@ -19,6 +22,7 @@ class AuthService {
   }
 
   Future<UserModel> getUserLogger() async {
+    //TODO: Agregar endpoint que devuelve la info de un solo user
     final response = await http.get(Uri.parse('./mockup_data/users.json'));
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -34,13 +38,22 @@ class AuthService {
   }
 
   /// Recupera el token almacenado
-  Future<String?> getToken() async {
-    return await storageService.read('jwt_token');
+  Future<JwtPayload?> getToken() async {
+    var token = await storageService.read('jwt_token');
+    if (token != null) {
+      return JwtPayload.fromToken(token);
+    }
+    return null;
   }
 
   /// Cierra sesión eliminando el token
-  Future<void> logout() async {
-    await storageService.delete('jwt_token');
+  Future<bool> logout(BuildContext context) async {
+    try {
+      return storageService.delete('jwt_token');
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   /// Método para iniciar sesión

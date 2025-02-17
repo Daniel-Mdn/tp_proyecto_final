@@ -1,0 +1,37 @@
+[
+	{
+		"id": 1,
+		"nombre": "morbi vel lectus in quam",
+		"descripcion": "sit amet lobortis sapien sapien",
+		"grupo_musculares": "grupo3",
+		"fecha_creacion": "2024-10-02T04:06:44Z"
+	},
+	{
+		"id": 2,
+		"nombre": "sit amet consectetuer adipiscing elit",
+		"descripcion": "pulvinar lobortis est phasellus sit",
+		"grupo_musculares": "grupo3",
+		"fecha_creacion": "2024-07-15T17:54:21Z"
+	},
+	{
+		"id": 3,
+		"nombre": "luctus et ultrices posuere cubilia",
+		"descripcion": "sit amet justo morbi ut",
+		"grupo_musculares": "grupo1",
+		"fecha_creacion": "2025-01-01T06:03:26Z"
+	},
+	{
+		"id": 4,
+		"nombre": "sem fusce consequat nulla nisl",
+		"descripcion": "in congue etiam justo etiam",
+		"grupo_musculares": "grupo2",
+		"fecha_creacion": "2024-11-23T07:43:42Z"
+	},
+	{
+		"id": 5,
+		"nombre": "ac est lacinia nisi venenatis",
+		"descripcion": "venenatis lacinia aenean sit amet",
+		"grupo_musculares": "grupo3",
+		"fecha_creacion": "2024-06-06T22:54:35Z"
+	}
+]

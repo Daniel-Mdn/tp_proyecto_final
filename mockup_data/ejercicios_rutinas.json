@@ -1,0 +1,52 @@
+[
+	{
+		"id_rutina": 1,
+		"id_ejercicio": 5,
+		"duracion": 5,
+		"repeticiones":8,
+		"series": 4,
+		"dificultad": "dificil",
+		"observaciones": "luctus nec molestie sed justo",
+		"fecha_creacion": "2024-05-02T15:22:21Z"
+	},
+	{
+		"id_rutina": 1,
+		"id_ejercicio": 2,
+		"duracion": 10,
+		"repeticiones":7,
+		"series": 3,
+		"dificultad": "facil",
+		"observaciones": "ac neque duis bibendum morbi",
+		"fecha_creacion": "2024-12-16T05:05:07Z"
+	},
+	{
+		"id_rutina": 3,
+		"id_ejercicio": 3,
+		"duracion": 15,
+		"repeticiones":10,
+		"series": 3,
+		"dificultad": "dificil",
+		"observaciones": "suspendisse accumsan tortor quis turpis",
+		"fecha_creacion": "2024-03-10T21:49:56Z"
+	},
+	{
+		"id_rutina": 3,
+		"id_ejercicio": 1,
+		"duracion": 12,
+		"repeticiones":10,
+		"series": 3,
+		"dificultad": "moderada",
+		"observaciones": "nunc nisl duis bibendum felis",
+		"fecha_creacion": "2024-10-09T01:09:30Z"
+	},
+	{
+		"id_rutina": 4,
+		"id_ejercicio": 4,
+		"duracion": 7,
+		"repeticiones":5,
+		"series": 3,
+		"dificultad": "dificil",
+		"observaciones": "tincidunt nulla mollis molestie lorem",
+		"fecha_creacion": "2024-05-08T10:17:33Z"
+	}
+]

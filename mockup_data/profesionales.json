@@ -1,0 +1,28 @@
+[
+	{
+		"id": 1,
+		"nombre": "Gray",
+		"apellido": "Crasswell",
+		"email": "gcrasswell0@virginia.edu",
+		"genero": "masculino",
+		"fecha_nacimiento": "2024-05-18T18:33:49Z",
+		"telefono": "197-407-2761",
+		"rol": "entrenador",
+		"especialidad": "nutricionista",
+		"calificacion": 4,
+		"deporte": "gimnasia"
+	},
+	{
+		"id": 3,
+		"nombre": "Mitzi",
+		"apellido": "Grimsdike",
+		"email": "mgrimsdike2@fastcompany.com",
+		"genero": "femenino",
+		"fecha_nacimiento": "2024-06-04T02:44:32Z",
+		"telefono": "352-902-1036",
+		"rol": "entrenador",
+		"especialidad": "entrenador",
+		"calificacion": 62,
+		"deporte": "tenis"
+	}
+]
