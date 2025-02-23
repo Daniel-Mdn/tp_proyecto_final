@@ -45,7 +45,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 return DrawerHeader(
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('imgs/background_image.jpg'),
+                            image: AssetImage('assets/imgs/background_image.jpg'),
                             fit: BoxFit.cover)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -57,7 +57,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                               width: 60,
                               height: 60,
                               alignment: Alignment.center,
-                              child: Image.asset('imgs/logo.png',
+                              child: Image.asset('assets/imgs/logo.png',
                                   fit: BoxFit.cover),
                             ),
                             Expanded(

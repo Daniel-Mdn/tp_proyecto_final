@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
@@ -75,151 +76,141 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         color: Colors.black,
         child: Stack(
+          fit: StackFit.expand,
           children: [
             Positioned.fill(
                 child: Opacity(
               opacity: 0.3,
-              child:
-                  Image.asset('imgs/background_image.jpg', fit: BoxFit.cover),
+              child: Image.asset('assets/imgs/background_image.jpg',
+                  fit: BoxFit.cover),
             )),
             Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 48),
-                child: Center(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 48, vertical: 32),
+                child: Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      Center(
-                          child: ClipOval(
-                        child: Container(
-                          width: 180,
-                          height: 180,
-                          alignment: Alignment.center,
-                          child:
-                              Image.asset('imgs/logo.png', fit: BoxFit.cover),
-                        ),
-                      )),
-                      const SizedBox(height: 40),
-                      const Text(
-                        'Bienvenido a PINAF',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 40),
-                      SizedBox(
-                        child: Form(
-                          key: _formGlobalKey,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 16),
-                                child: Flex(
-                                  direction: Axis.vertical,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    TextFormField(
-                                      controller: _emailController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Usuario o Email',
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        errorStyle: TextStyle(
-                                            fontSize: theme.textTheme.bodyMedium
-                                                ?.fontSize),
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'El campo es requerido';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    const SizedBox(height: 16),
-                                    TextFormField(
-                                      controller: _passwordController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Contraseña',
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        suffixIcon:
-                                            const Icon(Icons.remove_red_eye),
-                                        errorStyle: TextStyle(
-                                            fontSize: theme.textTheme.bodyMedium
-                                                ?.fontSize),
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'El campo es requerido';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    const SizedBox(height: 40),
-                                    Flex(
-                                      direction: Axis.vertical,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            if (_errorMessage != null)
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 16),
-                                                child: Text(
-                                                  _errorMessage!,
-                                                  style: const TextStyle(
-                                                      color: Colors.red),
-                                                ),
-                                              ),
-                                            FilledButton(
-                                              onPressed:
-                                                  _isLoading ? null : _login,
-                                              style: FilledButton.styleFrom(
-                                                  fixedSize: Size.fromWidth(
-                                                MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.6,
-                                              )),
-                                              child: _isLoading
-                                                  ? const CircularProgressIndicator()
-                                                  : const Text(
-                                                      'Iniciar sesión'),
-                                            ),
-                                            const SizedBox(height: 16),
-                                            OutlinedButton(
-                                              onPressed: () {},
-                                              style: OutlinedButton.styleFrom(
-                                                  backgroundColor:
-                                                      colorScheme.onPrimary,
-                                                  fixedSize: Size.fromWidth(
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .width *
-                                                        0.6,
-                                                  )),
-                                              child: const Text('Registrarse'),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                      Visibility(
+                        visible: MediaQuery.of(context).viewInsets.bottom ==
+                            0, // Se oculta si hay teclado
+                        child: Flexible(
+                            flex: 3,
+                            child: ClipOval(
+                              child: Container(
+                                width: 180,
+                                height: 180,
+                                alignment: Alignment.center,
+                                child: Image.asset('assets/imgs/logo.png',
+                                    fit: BoxFit.cover),
                               ),
-                            ],
-                          ),
-                        ),
+                            )),
                       ),
+                      Flexible(
+                          flex: 1,
+                          child: Visibility(
+                            visible: MediaQuery.of(context).viewInsets.bottom ==
+                                0, // Se oculta si hay teclado
+
+                            child: SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02),
+                          )),
+                      Flexible(
+                          flex: 3,
+                          child: Text(
+                            'Bienvenido a PINAF',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: theme.textTheme.titleLarge?.fontSize,
+                                fontWeight: FontWeight.bold),
+                          )),
+                      Flexible(
+                        flex: 1,
+                        child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02),
+                      ),
+                      Flexible(
+                          flex: 20,
+                          fit: FlexFit.tight,
+                          child: Form(
+                            key: _formGlobalKey,
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  controller: _emailController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Usuario o Email',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    errorStyle: TextStyle(
+                                        fontSize: theme
+                                            .textTheme.bodyMedium?.fontSize),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'El campo es requerido';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.height * 0.02,
+                                  width: 20,
+                                ),
+                                TextFormField(
+                                  controller: _passwordController,
+                                  decoration: InputDecoration(
+                                    labelText: 'Contraseña',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    suffixIcon:
+                                        const Icon(Icons.remove_red_eye),
+                                    errorStyle: TextStyle(
+                                        fontSize: theme
+                                            .textTheme.bodyMedium?.fontSize),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'El campo es requerido';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const Flexible(child: SizedBox(height: 30)),
+                                if (_errorMessage != null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Text(
+                                      _errorMessage!,
+                                      style: const TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                FilledButton(
+                                  onPressed: _isLoading ? null : _login,
+                                  style: FilledButton.styleFrom(
+                                      fixedSize: Size.fromWidth(
+                                    MediaQuery.of(context).size.width * 0.6,
+                                  )),
+                                  child: _isLoading
+                                      ? const CircularProgressIndicator()
+                                      : const Text('Iniciar sesión'),
+                                ),
+                                const SizedBox(height: 6),
+                                OutlinedButton(
+                                  onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                      backgroundColor: colorScheme.onPrimary,
+                                      fixedSize: Size.fromWidth(
+                                        MediaQuery.of(context).size.width * 0.6,
+                                      )),
+                                  child: const Text('Registrarse'),
+                                )
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ))

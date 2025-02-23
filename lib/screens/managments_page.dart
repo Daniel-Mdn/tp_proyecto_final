@@ -7,7 +7,10 @@ import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
+import 'package:tp_proyecto_final/widgets/app_bar_widget.dart';
+import 'package:tp_proyecto_final/widgets/bottom_navigator_widget.dart';
 import 'package:tp_proyecto_final/widgets/drawer_widget.dart';
+import 'package:tp_proyecto_final/widgets/section_card.dart';
 
 class ManagmentsPage extends StatefulWidget {
   const ManagmentsPage({super.key});
@@ -36,59 +39,44 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
     final ColorScheme colorScheme = theme.colorScheme;
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('PINAF'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: const AppBarWidget(),
       drawer: const DrawerWidget(),
-      body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(children: [
-            FutureBuilder<List<UserModel>>(
-                future: futureRoutinesList,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var usersList = snapshot.data ?? [];
-                    return ListView(
-                      shrinkWrap: true,
-                      children: [
-                        for (var item in usersList)
-                          ListTile(
-                            leading: Image.asset('imgs/without_img.png'),
-                            title: Text('${item.nombre} - ${item.apellido}'),
-                            subtitle: Text(item.email),
-                          )
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return SnackBar(content: Text('${snapshot.error}'));
-                  }
-                  // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
-                })
-          ])),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'Rutinas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Buscar Gimnasio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant),
-            label: 'Alimentación',
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            SectionCard(
+                title: "Equipos",
+                description: "Aqui veras tus equipos",
+                actionText: "Crear equipo",
+                onActionPressed: () {
+                  GoRouter.of(context).go('/equipos');
+                }),
+            SectionCard(
+                title: "Rutinas",
+                description: "Aqui veras tus rutinas",
+                actionText: "Crear rutinas",
+                onActionPressed: () {
+                  GoRouter.of(context).go('/rutinas');
+                }),
+            SectionCard(
+                title: "Planes de alimentación",
+                description: "Crea planes para tus clientes",
+                actionText: "Crear plan",
+                onActionPressed: () {
+                  GoRouter.of(context).go('/planes-alimentacion');
+                }),
+            SectionCard(
+                title: "Alimentos",
+                description: "Crea alimentos para tus planes alimenticios",
+                actionText: "Crear alimento",
+                onActionPressed: () {
+                  GoRouter.of(context).go('/alimentos');
+                }),
+          ],
+        ),
       ),
+      bottomNavigationBar: const BottomNavigatorBarWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add),

@@ -11,9 +11,10 @@ class AuthService {
   final String baseUrl = 'https://tubackend.com/api';
   final StorageService storageService;
 
+    // Solo funciona para web
   Future<http.Response> simulateLogin() async {
     // key for encript = qwertyuiopasdfghjklzxcvbnm123456
-    final resp = await http.get(Uri.parse('./mockup_data/login.json'),
+    final resp = await http.get(Uri.parse('./assets/mockup_data/login.json'),
         headers: {
           "Strict-Transport-Security":
               "max-age=63072000; includeSubDomains; preload"
@@ -23,7 +24,7 @@ class AuthService {
 
   Future<UserModel> getUserLogger() async {
     //TODO: Agregar endpoint que devuelve la info de un solo user
-    final response = await http.get(Uri.parse('./mockup_data/users.json'));
+    final response = await http.get(Uri.parse('./assets/mockup_data/users.json'));
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
@@ -70,6 +71,7 @@ class AuthService {
       // );
       final response = await simulateLogin();
       // Si la autenticación es exitosa, el backend debería devolver un JWT
+      
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final token = data['token'];

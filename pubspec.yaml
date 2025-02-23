@@ -44,6 +44,7 @@ dependencies:
   shared_preferences: ^2.3.3
   go_router: ^14.8.0
   jwt_decoder: ^2.0.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
   assets:
     - assets/
     - assets/imgs/
+    - assets/mockup_data/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

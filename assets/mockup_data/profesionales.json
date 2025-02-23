@@ -8,6 +8,7 @@
 		"fecha_nacimiento": "2024-05-18T18:33:49Z",
 		"telefono": "197-407-2761",
 		"rol": "entrenador",
+
 		"especialidad": "nutricionista",
 		"calificacion": 4,
 		"deporte": "gimnasia"
@@ -21,6 +22,7 @@
 		"fecha_nacimiento": "2024-06-04T02:44:32Z",
 		"telefono": "352-902-1036",
 		"rol": "entrenador",
+		
 		"especialidad": "entrenador",
 		"calificacion": 62,
 		"deporte": "tenis"

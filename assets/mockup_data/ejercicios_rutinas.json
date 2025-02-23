@@ -7,7 +7,8 @@
 		"series": 4,
 		"dificultad": "dificil",
 		"observaciones": "luctus nec molestie sed justo",
-		"fecha_creacion": "2024-05-02T15:22:21Z"
+		"fecha_creacion": "2024-05-02T15:22:21Z",
+		"orden":1
 	},
 	{
 		"id_rutina": 1,
@@ -17,7 +18,8 @@
 		"series": 3,
 		"dificultad": "facil",
 		"observaciones": "ac neque duis bibendum morbi",
-		"fecha_creacion": "2024-12-16T05:05:07Z"
+		"fecha_creacion": "2024-12-16T05:05:07Z",
+		"orden":2
 	},
 	{
 		"id_rutina": 3,
@@ -27,7 +29,8 @@
 		"series": 3,
 		"dificultad": "dificil",
 		"observaciones": "suspendisse accumsan tortor quis turpis",
-		"fecha_creacion": "2024-03-10T21:49:56Z"
+		"fecha_creacion": "2024-03-10T21:49:56Z",
+		"orden":1
 	},
 	{
 		"id_rutina": 3,
@@ -37,7 +40,8 @@
 		"series": 3,
 		"dificultad": "moderada",
 		"observaciones": "nunc nisl duis bibendum felis",
-		"fecha_creacion": "2024-10-09T01:09:30Z"
+		"fecha_creacion": "2024-10-09T01:09:30Z",
+		"orden":1
 	},
 	{
 		"id_rutina": 4,
@@ -47,6 +51,7 @@
 		"series": 3,
 		"dificultad": "dificil",
 		"observaciones": "tincidunt nulla mollis molestie lorem",
-		"fecha_creacion": "2024-05-08T10:17:33Z"
+		"fecha_creacion": "2024-05-08T10:17:33Z",
+		"orden":1
 	}
 ]

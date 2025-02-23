@@ -1,17 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/helpers/app_material_theme.dart';
+import 'package:tp_proyecto_final/model/user_model.dart';
+import 'package:tp_proyecto_final/screens/equips_page.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/screens/login_page.dart';
 import 'package:tp_proyecto_final/screens/managments_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
+import 'package:tp_proyecto_final/services/search_provider.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
+import 'package:tp_proyecto_final/services/user_provider.dart';
 
 // Variable global para controlar si ya se mostró la pantalla de bienvenida
 bool _splashShown = false;
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        // Provee el SearchProvider parametrizado para User
+        ChangeNotifierProvider(create: (_) => SearchProvider<UserModel>()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -19,15 +33,15 @@ class MyApp extends StatelessWidget {
 
   // Inicializa el router con redirección según el estado de sesión
   final GoRouter _router = GoRouter(
-    initialLocation: '/splash',
-    redirect: (context, state) {
-      print('state.matchedLocation');
-      print(state.matchedLocation);
-      if (!_splashShown && state.matchedLocation != '/splash') {
-        return '/splash';
-      }
-      return null;
-    },
+    // initialLocation: '/splash',
+    // redirect: (context, state) {
+    //   print('state.matchedLocation');
+    //   print(state.matchedLocation);
+    //   if (!_splashShown && state.matchedLocation != '/splash') {
+    //     return '/splash';
+    //   }
+    //   return null;
+    // },
     routes: [
       GoRoute(
         path: '/splash',
@@ -44,6 +58,10 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/gestiones',
         builder: (context, state) => const ManagmentsPage(),
+      ),
+      GoRoute(
+        path: '/equipos',
+        builder: (context, state) => EquipsPage(),
       ),
     ],
   );
@@ -90,7 +108,7 @@ class _SplashPageState extends State<SplashPage> {
     // Espera 3 segundos
     await Future.delayed(splashDuration);
     _splashShown = true;
-    
+
     final token = await _authService.getToken();
 
     if (token != null) {

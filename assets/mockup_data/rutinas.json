@@ -7,7 +7,35 @@
 		"dificultad": "dificil",
 		"descripcion": "ligula nec sem duis aliquam",
 		"id_propietario": 71,
-		"fecha_creacion": "2024-11-28T05:37:20Z"
+		"fecha_creacion": "2024-11-28T05:37:20Z",
+		"ejercicios": [{
+			"id": 5,
+			"nombre": "ac est lacinia nisi venenatis",
+			"descripcion": "venenatis lacinia aenean sit amet",
+			"grupo_musculares": "grupo3",
+			
+			"duracion": 5,
+			"repeticiones": 8,
+			"series": 4,
+			"dificultad": "dificil",
+			"observaciones": "luctus nec molestie sed justo",
+			"orden":1,
+			"fecha_creacion": "2024-06-06T22:54:35Z"
+		},
+		{
+			"id": 2,
+			"nombre": "sit amet consectetuer adipiscing elit",
+			"descripcion": "pulvinar lobortis est phasellus sit",
+			"grupo_musculares": "grupo3",
+
+			"duracion": 10,
+			"repeticiones":7,
+			"series": 3,
+			"dificultad": "facil",
+			"observaciones": "ac neque duis bibendum morbi",
+			"fecha_creacion": "2024-12-16T05:05:07Z",
+			"orden":2
+		}]
 	},
 	{
 		"id": 2,
