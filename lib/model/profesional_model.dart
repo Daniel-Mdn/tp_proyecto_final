@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:tp_proyecto_final/model/user_model.dart';
+
 List<ProfesionalModel> userModelFromJson(String str) =>
     List<ProfesionalModel>.from((json.decode(str) as List<dynamic>).map((x) {
       return ProfesionalModel.fromJson(x);
@@ -58,4 +60,4 @@ class ProfesionalModel {
 
 enum Genero { masculino, femenino }
 
-enum TipoUsuario { cliente, entrenador }
+enum TipoProfesional { entrenador, nutricionista }

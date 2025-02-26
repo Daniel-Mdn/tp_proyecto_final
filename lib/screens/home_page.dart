@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:tp_proyecto_final/helpers/app_colors.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/search_provider.dart';
@@ -13,7 +9,6 @@ import 'package:tp_proyecto_final/widgets/app_bar_widget.dart';
 import 'package:tp_proyecto_final/widgets/bottom_navigator_widget.dart';
 import 'package:tp_proyecto_final/widgets/drawer_widget.dart';
 import 'package:tp_proyecto_final/widgets/search_with_autocomplete.dart';
-import 'package:tp_proyecto_final/widgets/section_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _formGlobalKey = GlobalKey<FormState>();
   final AuthService _authService =
       AuthService(storageService: StorageService());
 

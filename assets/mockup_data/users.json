@@ -7,7 +7,7 @@
 		"genero": "masculino",
 		"fecha_nacimiento": "2024-05-18T18:33:49Z",
 		"telefono": "197-407-2761",
-		"rol": "entrenador"
+		"rol": "profesional"
 	},
 	{
 		"id": 2,
@@ -27,7 +27,7 @@
 		"genero": "femenino",
 		"fecha_nacimiento": "2024-06-04T02:44:32Z",
 		"telefono": "352-902-1036",
-		"rol": "entrenador"
+		"rol": "profesional"
 	},
 	{
 		"id": 4,

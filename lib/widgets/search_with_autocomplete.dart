@@ -76,9 +76,7 @@ class _SearchWithAutocompleteInputState<T extends Object>
                   )
                 : null,
           ),
-          onChanged: (query) {
-            // searchProvider.onSearchChanged(query, fetchFunction);
-          },
+          onChanged: (query) {},
         );
       },
     );

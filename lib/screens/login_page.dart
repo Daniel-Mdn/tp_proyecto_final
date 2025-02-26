@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
-import 'package:tp_proyecto_final/services/user_provider.dart';
+import 'package:tp_proyecto_final/widgets/custom_text_fields.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,8 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   // Instancia del servicio de autenticación
   final AuthService _authService =
       AuthService(storageService: StorageService());
-
-  final _usersProvider = UserProvider();
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -139,45 +136,24 @@ class _LoginPageState extends State<LoginPage> {
                             key: _formGlobalKey,
                             child: Column(
                               children: [
-                                TextFormField(
-                                  controller: _emailController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Usuario o Email',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
+                                CustomTextField(
+                                    controller: _emailController,
+                                    label: 'Usuario o Email',
                                     errorStyle: TextStyle(
                                         fontSize: theme
-                                            .textTheme.bodyMedium?.fontSize),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'El campo es requerido';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                            .textTheme.bodyMedium?.fontSize)),
                                 SizedBox(
-                                  height: MediaQuery.of(context).size.height * 0.02,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.02,
                                   width: 20,
                                 ),
-                                TextFormField(
+                                CustomTextField(
                                   controller: _passwordController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Contraseña',
-                                    floatingLabelBehavior:
-                                        FloatingLabelBehavior.never,
-                                    suffixIcon:
-                                        const Icon(Icons.remove_red_eye),
-                                    errorStyle: TextStyle(
-                                        fontSize: theme
-                                            .textTheme.bodyMedium?.fontSize),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'El campo es requerido';
-                                    }
-                                    return null;
-                                  },
+                                  label: 'Contraseña',
+                                  errorStyle: TextStyle(
+                                      fontSize:
+                                          theme.textTheme.bodyMedium?.fontSize),
+                                  obscureText: true,
                                 ),
                                 const Flexible(child: SizedBox(height: 30)),
                                 if (_errorMessage != null)
@@ -200,7 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 const SizedBox(height: 6),
                                 OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context.push("/registro");
+                                  },
                                   style: OutlinedButton.styleFrom(
                                       backgroundColor: colorScheme.onPrimary,
                                       fixedSize: Size.fromWidth(

@@ -58,4 +58,4 @@ class UserModel {
 
 enum Genero { masculino, femenino }
 
-enum TipoUsuario { cliente, entrenador }
+enum TipoUsuario { cliente, profesional }
