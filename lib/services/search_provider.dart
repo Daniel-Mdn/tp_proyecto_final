@@ -13,7 +13,7 @@ class SearchProvider<T> extends ChangeNotifier {
   void onSearchChanged(String query, Future<List<T>> Function(String) fetchFunction) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
-    _debounce = Timer(Duration(milliseconds: 500), () {
+    _debounce = Timer(const Duration(milliseconds: 500), () {
       _fetchSuggestions(query, fetchFunction);
     });
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tp_proyecto_final/helpers/app_colors.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
@@ -55,7 +54,7 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
                 description: "Aqui veras tus rutinas",
                 actionText: "Crear rutinas",
                 onActionPressed: () {
-                  GoRouter.of(context).go('/rutinas');
+                  GoRouter.of(context).go('/gestiones/rutina');
                 }),
             SectionCard(
                 title: "Planes de alimentación",

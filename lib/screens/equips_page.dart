@@ -4,6 +4,8 @@ import 'package:tp_proyecto_final/widgets/bottom_navigator_widget.dart';
 import 'package:tp_proyecto_final/widgets/drawer_widget.dart';
 
 class EquipsPage extends StatefulWidget {
+  const EquipsPage({super.key});
+
   @override
   _EquipsPageState createState() => _EquipsPageState();
 }

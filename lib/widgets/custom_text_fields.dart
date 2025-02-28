@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final TextStyle? errorStyle;
   final Widget? suffixIcon;
   final OutlineInputBorder? border;
+  final TextInputType keyboardType;
 
   const CustomTextField({
     super.key,
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
     this.errorStyle,
     this.suffixIcon,
     this.border,
+    this.keyboardType = TextInputType.text,
   });
 
   @override
@@ -29,6 +31,7 @@ class CustomTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: obscureText,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           labelText: label,
           floatingLabelBehavior: floatingLabelBehavior,

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/helpers/app_material_theme.dart';
+import 'package:tp_proyecto_final/model/exercise_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/screens/complete_registration_page.dart';
+import 'package:tp_proyecto_final/screens/create_routine_page.dart';
 import 'package:tp_proyecto_final/screens/equips_page.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/screens/login_page.dart';
 import 'package:tp_proyecto_final/screens/managments_page.dart';
 import 'package:tp_proyecto_final/screens/register_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
+import 'package:tp_proyecto_final/services/exercise_provider.dart';
 import 'package:tp_proyecto_final/services/search_provider.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
@@ -24,6 +27,8 @@ void main() {
         // Provee el SearchProvider parametrizado para User
         ChangeNotifierProvider(create: (_) => SearchProvider<UserModel>()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider<Exercise>()),
+        ChangeNotifierProvider(create: (_) => ExerciseProvider()),
       ],
       child: MyApp(),
     ),
@@ -82,6 +87,12 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/gestiones',
         builder: (context, state) => const ManagmentsPage(),
+        routes: [
+          GoRoute(
+            path: 'rutina',
+            builder: (context, state) => const CreateRoutinePage(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/equipos',
@@ -113,6 +124,8 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
   @override
   State<SplashPage> createState() => _SplashPageState();
 }

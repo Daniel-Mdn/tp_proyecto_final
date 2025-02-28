@@ -53,9 +53,7 @@ class _HomePageState extends State<HomePage> {
               height: 16,
             ),
             Row(children: [
-              // Flechas arriba/abajo
               Icon(Icons.swap_vert, color: theme.colorScheme.primary),
-              // Texto principal
               Text(
                 "Nombre",
                 style: TextStyle(
@@ -63,11 +61,7 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
-              // Ocupa el espacio restante para alinear a la derecha el ícono
-              Spacer(),
-
-              // Ícono de 'arrastre' o de menú
+              const Spacer(),
               Icon(Icons.list, color: theme.colorScheme.primary),
             ]),
             const SizedBox(
