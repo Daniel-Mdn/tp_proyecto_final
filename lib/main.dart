@@ -41,14 +41,12 @@ class MyApp extends StatelessWidget {
   // Inicializa el router con redirección según el estado de sesión
   final GoRouter _router = GoRouter(
     initialLocation: '/splash',
-    // redirect: (context, state) {
-    //   print('state.matchedLocation');
-    //   print(state.matchedLocation);
-    //   if (!_splashShown && state.matchedLocation != '/splash') {
-    //     return '/splash';
-    //   }
-    //   return null;
-    // },
+    redirect: (context, state) {
+      if (!_splashShown && state.matchedLocation != '/splash') {
+        return '/splash';
+      }
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/splash',

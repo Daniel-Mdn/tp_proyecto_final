@@ -21,10 +21,6 @@ class StorageService {
   Future<String?> read(String key) async {
     if (kIsWeb) {
       final prefs = await SharedPreferences.getInstance();
-      print('prefs');
-      print(prefs.toString());
-      print('prefs.toString()');
-
       return prefs.getString('jwt_token');
     } else {
       return await _storage.read(key: 'jwt_token');

@@ -52,7 +52,7 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
             SectionCard(
                 title: "Rutinas",
                 description: "Aqui veras tus rutinas",
-                actionText: "Crear rutinas",
+                actionText: "Crear rutina",
                 onActionPressed: () {
                   GoRouter.of(context).go('/gestiones/rutina');
                 }),
