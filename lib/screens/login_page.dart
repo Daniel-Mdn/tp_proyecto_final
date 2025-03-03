@@ -83,113 +83,111 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 48, vertical: 32),
-                child: Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Visibility(
-                        visible: MediaQuery.of(context).viewInsets.bottom ==
-                            0, // Se oculta si hay teclado
-                        child: Flexible(
-                            flex: 3,
-                            child: ClipOval(
-                              child: Container(
-                                width: 180,
-                                height: 180,
-                                alignment: Alignment.center,
-                                child: Image.asset('assets/imgs/logo.png',
-                                    fit: BoxFit.cover),
-                              ),
-                            )),
-                      ),
-                      Flexible(
-                          flex: 1,
-                          child: Visibility(
-                            visible: MediaQuery.of(context).viewInsets.bottom ==
-                                0, // Se oculta si hay teclado
-
-                            child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.02),
-                          )),
-                      Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Visibility(
+                      visible: MediaQuery.of(context).viewInsets.bottom ==
+                          0, // Se oculta si hay teclado
+                      child: Flexible(
                           flex: 3,
-                          child: Text(
-                            'Bienvenido a PINAF',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: theme.textTheme.titleLarge?.fontSize,
-                                fontWeight: FontWeight.bold),
-                          )),
-                      Flexible(
-                        flex: 1,
-                        child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.02),
-                      ),
-                      Flexible(
-                          flex: 20,
-                          fit: FlexFit.tight,
-                          child: Form(
-                            key: _formGlobalKey,
-                            child: Column(
-                              children: [
-                                CustomTextField(
-                                    controller: _emailController,
-                                    label: 'Usuario o Email',
-                                    errorStyle: TextStyle(
-                                        fontSize: theme
-                                            .textTheme.bodyMedium?.fontSize)),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.02,
-                                  width: 20,
-                                ),
-                                CustomTextField(
-                                  controller: _passwordController,
-                                  label: 'Contraseña',
-                                  errorStyle: TextStyle(
-                                      fontSize:
-                                          theme.textTheme.bodyMedium?.fontSize),
-                                  obscureText: true,
-                                ),
-                                const Flexible(child: SizedBox(height: 30)),
-                                if (_errorMessage != null)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    child: Text(
-                                      _errorMessage!,
-                                      style: const TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                FilledButton(
-                                  onPressed: _isLoading ? null : _login,
-                                  style: FilledButton.styleFrom(
-                                      fixedSize: Size.fromWidth(
-                                    MediaQuery.of(context).size.width * 0.6,
-                                  )),
-                                  child: _isLoading
-                                      ? const CircularProgressIndicator()
-                                      : const Text('Iniciar sesión'),
-                                ),
-                                const SizedBox(height: 6),
-                                OutlinedButton(
-                                  onPressed: () {
-                                    context.push("/registro");
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                      backgroundColor: colorScheme.onPrimary,
-                                      fixedSize: Size.fromWidth(
-                                        MediaQuery.of(context).size.width * 0.6,
-                                      )),
-                                  child: const Text('Registrarse'),
-                                )
-                              ],
+                          child: ClipOval(
+                            child: Container(
+                              width: 180,
+                              height: 180,
+                              alignment: Alignment.center,
+                              child: Image.asset('assets/imgs/logo.png',
+                                  fit: BoxFit.cover),
                             ),
-                          ))
-                    ],
-                  ),
+                          )),
+                    ),
+                    Flexible(
+                        flex: 1,
+                        child: Visibility(
+                          visible: MediaQuery.of(context).viewInsets.bottom ==
+                              0, // Se oculta si hay teclado
+                
+                          child: SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.02),
+                        )),
+                    Flexible(
+                        flex: 3,
+                        child: Text(
+                          'Bienvenido a PINAF',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: theme.textTheme.titleLarge?.fontSize,
+                              fontWeight: FontWeight.bold),
+                        )),
+                    Flexible(
+                      flex: 1,
+                      child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02),
+                    ),
+                    Flexible(
+                        flex: 20,
+                        fit: FlexFit.tight,
+                        child: Form(
+                          key: _formGlobalKey,
+                          child: Column(
+                            children: [
+                              CustomTextField(
+                                  controller: _emailController,
+                                  label: 'Usuario o Email',
+                                  errorStyle: TextStyle(
+                                      fontSize: theme
+                                          .textTheme.bodyMedium?.fontSize)),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
+                                width: 20,
+                              ),
+                              CustomTextField(
+                                controller: _passwordController,
+                                label: 'Contraseña',
+                                errorStyle: TextStyle(
+                                    fontSize:
+                                        theme.textTheme.bodyMedium?.fontSize),
+                                obscureText: true,
+                              ),
+                              const Flexible(child: SizedBox(height: 30)),
+                              if (_errorMessage != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: Text(
+                                    _errorMessage!,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              FilledButton(
+                                onPressed: _isLoading ? null : _login,
+                                style: FilledButton.styleFrom(
+                                    fixedSize: Size.fromWidth(
+                                  MediaQuery.of(context).size.width * 0.6,
+                                )),
+                                child: _isLoading
+                                    ? const CircularProgressIndicator()
+                                    : const Text('Iniciar sesión'),
+                              ),
+                              const SizedBox(height: 6),
+                              OutlinedButton(
+                                onPressed: () {
+                                  context.push("/registro");
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: colorScheme.onPrimary,
+                                    fixedSize: Size.fromWidth(
+                                      MediaQuery.of(context).size.width * 0.6,
+                                    )),
+                                child: const Text('Registrarse'),
+                              )
+                            ],
+                          ),
+                        ))
+                  ],
                 ))
           ],
         ),
