@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:tp_proyecto_final/config/api_contants.dart';
 import 'package:tp_proyecto_final/helpers/app_material_theme.dart';
 import 'package:tp_proyecto_final/model/exercise_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
@@ -9,6 +11,7 @@ import 'package:tp_proyecto_final/screens/create_routine_page.dart';
 import 'package:tp_proyecto_final/screens/equips_page.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
 import 'package:tp_proyecto_final/screens/login_page.dart';
+import 'package:tp_proyecto_final/services/auth_interceptor.dart';
 import 'package:tp_proyecto_final/screens/managments_page.dart';
 import 'package:tp_proyecto_final/screens/register_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
@@ -21,10 +24,20 @@ import 'package:tp_proyecto_final/services/user_provider.dart';
 bool _splashShown = false;
 
 void main() {
+  final dio = Dio(BaseOptions(baseUrl: ApiConstants.baseUrl, headers: {
+    'Content-Type': 'application/json',
+  }, extra: {
+    'withCredentials': true
+  }));
+  final storageService = StorageService();
+  final authService = AuthService(storageService: storageService, dio: dio);
+  dio.interceptors.add(AuthInterceptor(authService: authService));
+
   runApp(
     MultiProvider(
       providers: [
         // Provee el SearchProvider parametrizado para User
+        ChangeNotifierProvider<AuthService>(create: (_) => authService),
         ChangeNotifierProvider(create: (_) => SearchProvider<UserModel>()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider<Exercise>()),
@@ -129,8 +142,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
   final Duration splashDuration = const Duration(seconds: 3);
 
   @override
@@ -140,11 +151,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _navegarSiguiente() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     // Espera 3 segundos
     await Future.delayed(splashDuration);
     _splashShown = true;
 
-    final token = await _authService.getToken();
+    final token = await authService.getToken();
 
     if (token != null) {
       // Si hay token, navega a home

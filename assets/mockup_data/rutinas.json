@@ -8,73 +8,42 @@
 		"descripcion": "ligula nec sem duis aliquam",
 		"id_propietario": 71,
 		"fecha_creacion": "2024-11-28T05:37:20Z",
-		"ejercicios": [{
-			"id": 5,
-			"nombre": "ac est lacinia nisi venenatis",
-			"descripcion": "venenatis lacinia aenean sit amet",
-			"grupo_musculares": "grupo3",
-			
-			"duracion": 5,
-			"repeticiones": 8,
-			"series": 4,
-			"dificultad": "dificil",
-			"observaciones": "luctus nec molestie sed justo",
-			"orden":1,
-			"fecha_creacion": "2024-06-06T22:54:35Z"
-		},
-		{
-			"id": 2,
-			"nombre": "sit amet consectetuer adipiscing elit",
-			"descripcion": "pulvinar lobortis est phasellus sit",
-			"grupo_musculares": "grupo3",
+		"dias": [
+			{
+				"orden": 1,
+				"dia": "dia",
+				"observaciones": "observaciones",
+				"ejercicios": [
+					{
+						"id": 5,
+						"nombre": "ac est lacinia nisi venenatis",
+						"descripcion": "venenatis lacinia aenean sit amet",
+						"grupo_musculares": "grupo3",
 
-			"duracion": 10,
-			"repeticiones":7,
-			"series": 3,
-			"dificultad": "facil",
-			"observaciones": "ac neque duis bibendum morbi",
-			"fecha_creacion": "2024-12-16T05:05:07Z",
-			"orden":2
-		}]
-	},
-	{
-		"id": 2,
-		"nombre": " justo",
-		"objetivo": "leo maecenas",
-		"duracion": 35,
-		"dificultad": "dificil",
-		"descripcion": "morbi odio odio elementum eu",
-		"id_propietario": 27,
-		"fecha_creacion": "2024-08-24T06:07:18Z"
-	},
-	{
-		"id": 3,
-		"nombre": "matt ullamcorper",
-		"objetivo": "suspendisse potenti",
-		"duracion": 90,
-		"dificultad": "facil",
-		"descripcion": "suscipit ligula in lacus curabitur",
-		"id_propietario": 57,
-		"fecha_creacion": "2024-05-04T15:26:21Z"
-	},
-	{
-		"id": 4,
-		"nombre": "gravi massa",
-		"objetivo": "hendrerit at",
-		"duracion": 86,
-		"dificultad": "facil",
-		"descripcion": "quam nec dui luctus rutrum",
-		"id_propietario": 15,
-		"fecha_creacion": "2024-11-12T23:47:09Z"
-	},
-	{
-		"id": 5,
-		"nombre": " consequat",
-		"objetivo": "ultrices phasellus",
-		"duracion": 51,
-		"dificultad": "dificil",
-		"descripcion": "quis lectus suspendisse potenti in",
-		"id_propietario": 77,
-		"fecha_creacion": "2024-04-14T11:01:22Z"
+						"duracion": 5,
+						"repeticiones": 8,
+						"series": 4,
+						"dificultad": "dificil",
+						"observaciones": "luctus nec molestie sed justo",
+						"orden": 1,
+						"fecha_creacion": "2024-06-06T22:54:35Z"
+					},
+					{
+						"id": 2,
+						"nombre": "sit amet consectetuer adipiscing elit",
+						"descripcion": "pulvinar lobortis est phasellus sit",
+						"grupo_musculares": "grupo3",
+
+						"duracion": 10,
+						"repeticiones": 7,
+						"series": 3,
+						"dificultad": "facil",
+						"observaciones": "ac neque duis bibendum morbi",
+						"fecha_creacion": "2024-12-16T05:05:07Z",
+						"orden": 2
+					}
+				]
+			}
+		]
 	}
 ]

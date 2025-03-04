@@ -14,8 +14,6 @@ class AppBarWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _AppBarWidgetState extends State<AppBarWidget> {
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
 
   late Future<UserModel> userLogged;
 

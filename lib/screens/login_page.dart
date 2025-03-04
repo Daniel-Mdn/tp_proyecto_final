@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/widgets/custom_text_fields.dart';
@@ -17,10 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Instancia del servicio de autenticación
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
-
   bool _isLoading = false;
   String? _errorMessage;
 
@@ -32,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _login() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     try {
       if (!_formGlobalKey.currentState!.validate()) {
         return;
@@ -44,14 +43,14 @@ class _LoginPageState extends State<LoginPage> {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
-      final success = await _authService.login(email, password);
+      final success = await authService.login(email, password);
 
       setState(() {
         _isLoading = false;
       });
 
       if (success) {
-        final futureUsersList = await _authService.getUserLogger();
+        final futureUsersList = await authService.getUserLogger();
         // Si el login es exitoso, navega a la pantalla principal o donde requieras
         context.go("/home");
       } else {
@@ -107,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Visibility(
                           visible: MediaQuery.of(context).viewInsets.bottom ==
                               0, // Se oculta si hay teclado
-                
+
                           child: SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.02),

@@ -18,10 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
-
-  // late Future<UserModel> userLogged;
   late Future<List<UserModel>> futureUsersList;
 
   @override

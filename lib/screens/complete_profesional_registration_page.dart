@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/certification_form_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
-import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/widgets/certification_form_modal.dart';
 
 class CompleteProfesionalRegistrationPage extends StatefulWidget {
@@ -16,9 +16,6 @@ class CompleteProfesionalRegistrationPage extends StatefulWidget {
 class _CompleteProfesionalRegistrationPageState
     extends State<CompleteProfesionalRegistrationPage> {
   final List<CertificationForm> certifications = [];
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
-
   Future<void> addCertification() async {
     final certification = await showCertificationFormModal(context);
     if (certification != null) {
@@ -49,6 +46,7 @@ class _CompleteProfesionalRegistrationPageState
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final authService = Provider.of<AuthService>(context, listen: false);
 
     return Scaffold(
         backgroundColor: theme.colorScheme.surfaceContainerLowest,
@@ -177,7 +175,7 @@ class _CompleteProfesionalRegistrationPageState
                 children: [
                   OutlinedButton(
                     onPressed: () async {
-                      var resp = await _authService.logout(context);
+                      var resp = await authService.logout(context);
                       if (resp) {
                         if (!context.mounted) return;
                         context.go('/login');

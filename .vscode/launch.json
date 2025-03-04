@@ -8,7 +8,8 @@
             "name": "tp_proyecto_final",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug"
+            "flutterMode": "debug",
+            "args": ["--web-port=63437"]
         },
         {
             "name": "tp_proyecto_final (profile mode)",

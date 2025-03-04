@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
@@ -12,19 +13,19 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
-
   late Future<UserModel> userLogged;
 
   @override
   void initState() {
     super.initState();
-    userLogged = _authService.getUserLogger();
+    final authService = Provider.of<AuthService>(context, listen: false);
+    userLogged = authService.getUserLogger();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero, // Importante remover el padding
@@ -43,7 +44,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 return DrawerHeader(
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/imgs/background_image.jpg'),
+                            image:
+                                AssetImage('assets/imgs/background_image.jpg'),
                             fit: BoxFit.cover)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +129,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             title: const Text('Cerrar sesión'),
             leading: const Icon(Icons.logout),
             onTap: () async {
-              var resp = await _authService.logout(context);
+              var resp = await authService.logout(context);
               if (resp) {
                 if (!context.mounted) return;
                 context.go('/login');

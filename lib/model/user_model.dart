@@ -26,7 +26,7 @@ class UserModel {
   final String email;
   final Genero genero;
   final DateTime fechaNacimiento;
-  final String telefono;
+  final int telefono;
   final TipoUsuario rol;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -34,16 +34,17 @@ class UserModel {
       id: json["id"],
       nombre: json["nombre"],
       apellido: json["apellido"],
-      email: json["email"],
-      genero: json["genero"] == 'femenino' ? Genero.femenino : Genero.masculino,
+      email: json["username"],
+      genero: json["sexo"] == 'femenino' ? Genero.femenino : Genero.masculino,
       fechaNacimiento: json["fecha_nacimiento"] is String
           ? DateTime.parse(json["fecha_nacimiento"])
           : json["fecha_nacimiento"],
       telefono: json["telefono"],
       rol: TipoUsuario.values
-          .firstWhere((val) => val.toString() == json["rol"], orElse: () => TipoUsuario.cliente),
+          .firstWhere((val) => val.toString() == json["role"], orElse: () => TipoUsuario.cliente),
     );
   }
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "nombre": nombre,

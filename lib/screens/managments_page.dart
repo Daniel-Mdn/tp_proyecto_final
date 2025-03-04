@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tp_proyecto_final/model/routine_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
+import 'package:tp_proyecto_final/services/routine_provider.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
 import 'package:tp_proyecto_final/widgets/app_bar_widget.dart';
@@ -18,16 +20,13 @@ class ManagmentsPage extends StatefulWidget {
 
 class _ManagmentsPageState extends State<ManagmentsPage> {
   final _formGlobalKey = GlobalKey<FormState>();
-  final AuthService _authService =
-      AuthService(storageService: StorageService());
-
-  late Future<List<UserModel>> futureRoutinesList;
+  late Future<List<Routine>> futureRoutinesList;
 
   @override
   void initState() {
     super.initState();
-    var usersProvider = UserProvider();
-    futureRoutinesList = usersProvider.getUsers();
+    var routineProvider = RoutineProvider();
+    futureRoutinesList = routineProvider.getRoutines();
   }
 
   @override
@@ -49,12 +48,80 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
                 onActionPressed: () {
                   GoRouter.of(context).go('/equipos');
                 }),
-            SectionCard(
-                title: "Rutinas",
-                description: "Aqui veras tus rutinas",
-                actionText: "Crear rutina",
-                onActionPressed: () {
-                  GoRouter.of(context).go('/gestiones/rutina');
+            FutureBuilder(
+                future: futureRoutinesList,
+                builder: (context, snapshot) {
+                  
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("Error loading routines"));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return SectionCard(
+                        title: "Rutinas",
+                        description: "Aqui veras tus rutinas",
+                        actionText: "Crear rutina",
+                        onActionPressed: () {
+                          GoRouter.of(context).go('/gestiones/rutina');
+                        });
+                  }
+                  final routines = snapshot.data!;
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: routines.length,
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final routine = routines[index];
+
+                      return Padding(
+                        padding: EdgeInsets.only(right: 12.0),
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: SizedBox(
+                            width: 160,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    routine.name,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "⏳ ${routine.duration} min | 🎯 ${routine.objective}",
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 8),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
+                                    ),
+                                    child: Text("View"),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 }),
             SectionCard(
                 title: "Planes de alimentación",

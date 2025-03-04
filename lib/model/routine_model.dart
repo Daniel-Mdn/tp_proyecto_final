@@ -1,7 +1,9 @@
+import 'dart:convert';
 
 import 'package:tp_proyecto_final/model/exercise_model.dart';
 
 class Routine {
+  int? id;
   String name;
   String objective;
   int duration;
@@ -10,6 +12,7 @@ class Routine {
   List<RoutineDay> days;
 
   Routine({
+    this.id,
     required this.name,
     required this.objective,
     required this.duration,
@@ -18,15 +21,32 @@ class Routine {
     required this.days,
   });
 
+  factory Routine.fromJson(Map<String, dynamic> json) {
+    return Routine(
+      id: json["id"],
+      name: json["nombre"],
+      objective: json["objetivo"],
+      duration: json["duracion"],
+      difficulty: json["dificultad"],
+      description: json["descripcion"],
+      days: json["dias"],
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         'nombre': name,
         'objetivo': objective,
         'duracion': duration,
         'dificultad': difficulty,
         'descripcion': description,
-        'esquema': days.map((day) => day.toJson()).toList(),
+        'dias': days.map((day) => day.toJson()).toList(),
       };
 }
+
+List<Routine> routineFromJson(String str) =>
+    List<Routine>.from((json.decode(str) as List<dynamic>).map((x) {
+      return Routine.fromJson(x);
+    }));
 
 class RoutineDay {
   int order;
@@ -48,5 +68,3 @@ class RoutineDay {
         'ejercicios': exercises.map((exercise) => exercise.toJson()).toList(),
       };
 }
-
-
