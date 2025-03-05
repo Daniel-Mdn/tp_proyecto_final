@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
-import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/search_provider.dart';
-import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
 import 'package:tp_proyecto_final/widgets/app_bar_widget.dart';
 import 'package:tp_proyecto_final/widgets/bottom_navigator_widget.dart';
@@ -76,8 +74,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text("No se encontraron resultados"));
                 }
                 return Expanded(
-                    child: Container(
-                        child: ListView.separated(
+                    child: ListView.separated(
                   itemCount: searchProvider.suggestions.length,
                   itemBuilder: (context, index) {
                     final user = searchProvider.suggestions[index];
@@ -89,7 +86,7 @@ class _HomePageState extends State<HomePage> {
                       trailing: const Icon(Icons.arrow_right),
                       onTap: () {
                         // Acción al seleccionar un ítem del listado
-                        print("Seleccionado: $user");
+                        // print("Seleccionado: $user");
                       },
                     );
                   },
@@ -98,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       height: 1,
                     );
                   },
-                )));
+                ));
               },
             ),
           ])),

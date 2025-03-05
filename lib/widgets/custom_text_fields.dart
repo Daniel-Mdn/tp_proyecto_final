@@ -95,7 +95,6 @@ class CustomPasswordField extends StatelessWidget {
           if (isRequired && (value == null || value.isEmpty)) {
             return 'El campo es requerido';
           }
-          print(confirmController?.text);
           if (confirmController != null && value != confirmController!.text) {
             return 'Las contraseñas no coinciden';
           }

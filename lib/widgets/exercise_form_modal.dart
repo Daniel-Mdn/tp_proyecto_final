@@ -6,11 +6,10 @@ class ExerciseForm extends StatefulWidget {
   final Exercise exerciseData;
   final ExerciseDay? initialData;
 
-  const ExerciseForm({Key? key, required this.exerciseData, this.initialData})
-      : super(key: key);
+  const ExerciseForm({super.key, required this.exerciseData, this.initialData});
 
   @override
-  _ExerciseFormState createState() => _ExerciseFormState();
+  State<ExerciseForm> createState() => _ExerciseFormState();
 }
 
 class _ExerciseFormState extends State<ExerciseForm> {

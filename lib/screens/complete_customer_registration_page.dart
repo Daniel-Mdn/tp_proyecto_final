@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:tp_proyecto_final/model/client_model.dart';
+import 'package:tp_proyecto_final/model/user_model.dart';
+import 'package:tp_proyecto_final/services/auth_service.dart';
 
 class CompleteCustomerRegistrationPage extends StatefulWidget {
-  const CompleteCustomerRegistrationPage({super.key});
+  final Map<String, dynamic> formData;
+
+  const CompleteCustomerRegistrationPage({super.key, required this.formData});
 
   @override
   State<CompleteCustomerRegistrationPage> createState() =>
@@ -24,7 +30,9 @@ class _CompleteCustomerRegistrationPageState
 
   final List<String> deportes = ["Futbol", "Basket", "Volley"];
 
-  void _updateUser() {
+  Future<void> _updateUser() async {
+    final authProvider = Provider.of<AuthService>(context, listen: false);
+
     setState(() => _submitted = true);
 
     if (_formKey.currentState?.validate() ?? false) {
@@ -34,10 +42,34 @@ class _CompleteCustomerRegistrationPageState
           _timeDedicationController.text.isNotEmpty &&
           (_trainingTypeController.text != 'Entrenamiento deportivo' ||
               deportesSeleccionados.isNotEmpty)) {
-        var snackbar = ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registro completado')),
-        );
-        snackbar.closed.whenComplete(() => context.go('/home'));
+        try {
+          UserModel body = ClientModel(
+              id: 0,
+              nombre: widget.formData["nombre"],
+              apellido: widget.formData["apellido"],
+              email: widget.formData["username"],
+              sexo: widget.formData["sexo"],
+              fechaNacimiento: widget.formData["fechaNacimiento"],
+              telefono: widget.formData["telefono"],
+              role: widget.formData["role"],
+              password: widget.formData["password"],
+              afecciones: "Ninguna",
+              antecedentes: "Ninguna");
+
+          final response = await authProvider.createUser(body);
+          if (response) {
+            var snackbar = ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Registro completado')),
+            );
+            snackbar.closed.whenComplete(() => context.go('/home'));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Error creando el usuario')),
+            );
+          }
+        } catch (e) {
+          print('e in _updateUser $e');
+        }
       }
     }
   }
@@ -172,7 +204,7 @@ class _CompleteCustomerRegistrationPageState
                 children: [
                   OutlinedButton(
                     onPressed: () => context.go('/login'),
-                    child: const Text('Cerrar sesión'),
+                    child: const Text('Volver al login'),
                   ),
                   FilledButton(
                     onPressed: _updateUser,

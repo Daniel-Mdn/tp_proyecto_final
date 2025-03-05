@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tp_proyecto_final/model/exercise_model.dart';
 
 class ExerciseProvider extends ChangeNotifier {
+  final Dio dio;
+
+  ExerciseProvider({required this.dio});
+
   Future<Exercise> getExercise() async {
     final response =
         await http.get(Uri.parse('./assets/mockup_data/users.json'));

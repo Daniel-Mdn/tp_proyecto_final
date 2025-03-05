@@ -50,8 +50,6 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (success) {
-        final futureUsersList = await authService.getUserLogger();
-        // Si el login es exitoso, navega a la pantalla principal o donde requieras
         context.go("/home");
       } else {
         setState(() {

@@ -18,15 +18,17 @@ Future<CertificationForm?> showCertificationFormModal(
           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           top: 16,
         ),
-        child: CertificationFormWidget(),
+        child: const CertificationFormWidget(),
       );
     },
   );
 }
 
 class CertificationFormWidget extends StatefulWidget {
+  const CertificationFormWidget({super.key});
+
   @override
-  _CertificationFormWidgetState createState() =>
+  State<CertificationFormWidget> createState() =>
       _CertificationFormWidgetState();
 }
 

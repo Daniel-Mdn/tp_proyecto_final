@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/certification_form_model.dart';
+import 'package:tp_proyecto_final/model/profesional_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
+import 'package:tp_proyecto_final/services/modal_service.dart';
 import 'package:tp_proyecto_final/widgets/certification_form_modal.dart';
 
 class CompleteProfesionalRegistrationPage extends StatefulWidget {
-  const CompleteProfesionalRegistrationPage({super.key});
+  final Map<String, dynamic> formData;
+  final TipoProfesional specialty;
+
+  const CompleteProfesionalRegistrationPage(
+      {super.key, required this.formData, required this.specialty});
 
   @override
   State<CompleteProfesionalRegistrationPage> createState() =>
@@ -16,6 +22,8 @@ class CompleteProfesionalRegistrationPage extends StatefulWidget {
 class _CompleteProfesionalRegistrationPageState
     extends State<CompleteProfesionalRegistrationPage> {
   final List<CertificationForm> certifications = [];
+  final ModalService modalservice = ModalService();
+
   Future<void> addCertification() async {
     final certification = await showCertificationFormModal(context);
     if (certification != null) {
@@ -25,22 +33,46 @@ class _CompleteProfesionalRegistrationPageState
     }
   }
 
-  Future<void> postCertifications() async {
+  Future<void> createProfesional() async {
+    final authProvider = Provider.of<AuthService>(context, listen: false);
+
     if (certifications.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("No hay certificaciones para enviar")),
-      );
-      return;
+      var confirmAction = await modalservice.showConfirmationDialog(
+          context,
+          'Confirmación',
+          'No cargaste ninguna certificacion. ¿Quieres continuar?');
+      if (confirmAction != null && confirmAction == false) {
+        return;
+      }
     }
 
-    final List<Map<String, dynamic>> jsonData =
-        certifications.map((cert) => cert.toJson()).toList();
+    // final List<Map<String, dynamic>> jsonData =
+    //     certifications.map((cert) => cert.toJson()).toList();
 
-    print("Enviando a API: $jsonData");
+    ProfesionalModel body = ProfesionalModel(
+        id: 0,
+        nombre: widget.formData["nombre"],
+        apellido: widget.formData["apellido"],
+        email: widget.formData["username"],
+        sexo: widget.formData["sexo"],
+        fechaNacimiento: widget.formData["fechaNacimiento"],
+        telefono: widget.formData["telefono"],
+        role: widget.formData["role"],
+        password: widget.formData["password"],
+        specialty: widget.specialty,
+        sportsTag: "Ninguna");
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Certificaciones enviadas correctamente")),
-    );
+    final response = await authProvider.createUser(body);
+    if (response) {
+      var snackbar = ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Registro completado')),
+      );
+      snackbar.closed.whenComplete(() => context.go('/home'));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error creando el usuario')),
+      );
+    }
   }
 
   @override
@@ -182,10 +214,10 @@ class _CompleteProfesionalRegistrationPageState
                         Navigator.pop(context);
                       }
                     },
-                    child: const Text('Cerrar sesión'),
+                    child: const Text('Volver al login'),
                   ),
                   FilledButton(
-                    onPressed: postCertifications,
+                    onPressed: createProfesional,
                     child: const Text('Confirmar'),
                   ),
                 ],

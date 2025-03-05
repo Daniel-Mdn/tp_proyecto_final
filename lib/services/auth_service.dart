@@ -26,7 +26,6 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<UserModel> getUserLogger() async {
-    //TODO: Agregar endpoint que devuelve la info de un solo user
     try {
       final response = await dio.get(
         '/usuario/get',
@@ -111,6 +110,32 @@ class AuthService extends ChangeNotifier {
       return storageService.delete('jwt_token');
     } catch (e) {
       print('e in logout $e');
+      return false;
+    }
+  }
+
+  Future<bool> createUser(UserModel body) async {
+    try {
+      final response = await dio.post('/auth/registro', data: body.toJson());
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final token = data['token'];
+        if (token != null) {
+          // Almacena el token de forma segura
+          final result = await storageService.write(
+            'jwt_token',
+            token,
+          );
+          return result;
+        }
+        return false;
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to create user');
+      }
+    } catch (e) {
+      print('e in createUser $e');
       return false;
     }
   }

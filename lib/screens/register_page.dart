@@ -19,6 +19,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  DateTime? _birthDate;
+  Genero? _selectedGender;
+
   TipoUsuario _selectedRole = TipoUsuario.cliente;
   TipoProfesional? _selectedEspecialty;
   SegmentedButtonSelectable selectedSegmentedButton =
@@ -35,22 +39,24 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _register() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _birthDate != null) {
       // Aquí iría la lógica de registro
       final formData = {
         "nombre": _nameController.text.trim(),
         "apellido": _lastNameController.text.trim(),
-        "email": _emailController.text.trim(),
+        "username": _emailController.text.trim(),
+        "telefono": int.tryParse(_phoneController.text.trim()),
+        "fechaNacimiento": _birthDate,
+        "sexo": _selectedGender, // Convertir enum a string
         "password": _passwordController.text.trim(),
         "confirmPassword": _confirmPasswordController.text.trim(),
-        "rol": _selectedRole,
+        "role": _selectedRole,
       };
-      print("Registrando usuario como $_selectedRole");
 
       // Agregar llamada al post de crear usuario
       print("datos usuario ${formData.toString()}");
       context.go('/completar-registro',
-          extra: {_selectedRole, _selectedEspecialty});
+          extra: {_selectedRole, _selectedEspecialty, formData});
     }
   }
 
@@ -145,6 +151,64 @@ class _RegisterPageState extends State<RegisterPage> {
                             controller: _lastNameController, label: 'Apellido'),
                         CustomTextField(
                             controller: _emailController, label: 'Email'),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: DropdownButtonFormField<Genero>(
+                            value: _selectedGender,
+                            decoration: InputDecoration(
+                              labelText: "Género",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.8),
+                            ),
+                            onChanged: (Genero? newValue) {
+                              setState(() {
+                                _selectedGender = newValue;
+                              });
+                            },
+                            items: Genero.values.map((Genero gender) {
+                              return DropdownMenuItem<Genero>(
+                                value: gender,
+                                child: Text(gender == Genero.masculino
+                                    ? "Masculino"
+                                    : "Femenino"),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: TextFormField(
+                            readOnly:
+                                true, // Hace que el campo no sea editable directamente
+                            decoration: InputDecoration(
+                              labelText: _birthDate == null
+                                  ? "Fecha de nacimiento"
+                                  : "${_birthDate!.day}/${_birthDate!.month}/${_birthDate!.year}",
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.calendar_today),
+                                onPressed: () => _selectDate(context),
+                              ),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              filled: true,
+                              fillColor: Colors.white.withOpacity(0.8),
+                            ),
+                            onTap: () => _selectDate(
+                                context), // Llama a _selectDate cuando el usuario toca el campo
+                          ),
+                        ),
+                        CustomTextField(
+                          controller: _phoneController,
+                          label: 'Telefono',
+                          keyboardType: TextInputType.number,
+                        ),
                         CustomPasswordField(
                           controller: _passwordController,
                           label: 'Contraseña',
@@ -163,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       MediaQuery.of(context).size.width * 0.6,
                     )),
                     onPressed: _register,
-                    child: const Text('Crear Cuenta'),
+                    child: const Text('Continuar'),
                   ),
                   const SizedBox(height: 6),
                   OutlinedButton(
@@ -206,6 +270,21 @@ class _RegisterPageState extends State<RegisterPage> {
         },
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _birthDate = pickedDate;
+      });
+    }
   }
 }
 

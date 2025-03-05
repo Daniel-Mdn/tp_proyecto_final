@@ -2,62 +2,62 @@ import 'dart:convert';
 
 import 'package:tp_proyecto_final/model/user_model.dart';
 
-List<ProfesionalModel> userModelFromJson(String str) =>
+List<ProfesionalModel> profesionalModelFromJson(String str) =>
     List<ProfesionalModel>.from((json.decode(str) as List<dynamic>).map((x) {
       return ProfesionalModel.fromJson(x);
     }));
 
-String userModelToJson(List<ProfesionalModel> data) =>
+String profesionalModelToJson(List<ProfesionalModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ProfesionalModel {
-  ProfesionalModel({
-    required this.id,
-    required this.nombre,
-    required this.apellido,
-    required this.email,
-    required this.genero,
-    required this.fechaNacimiento,
-    required this.telefono,
-    required this.rol,
-  });
+class ProfesionalModel extends UserModel {
+  ProfesionalModel(
+      {required super.id,
+      required super.nombre,
+      required super.apellido,
+      required super.email,
+      required super.sexo,
+      required super.fechaNacimiento,
+      required super.telefono,
+      required super.role,
+      required this.specialty,
+      required this.sportsTag,
+      super.password});
 
-  final int id;
-  final String nombre;
-  final String apellido;
-  final String email;
-  final Genero genero;
-  final DateTime fechaNacimiento;
-  final String telefono;
-  final TipoUsuario rol;
+  final TipoProfesional specialty;
+  final String sportsTag;
 
   factory ProfesionalModel.fromJson(Map<String, dynamic> json) {
     return ProfesionalModel(
-      id: json["id"],
-      nombre: json["nombre"],
-      apellido: json["apellido"],
-      email: json["email"],
-      genero: json["genero"] == 'femenino' ? Genero.femenino : Genero.masculino,
-      fechaNacimiento: json["fecha_nacimiento"] is String
-          ? DateTime.parse(json["fecha_nacimiento"])
-          : json["fecha_nacimiento"],
-      telefono: json["telefono"],
-      rol: TipoUsuario.values
-          .firstWhere((val) => val.toString() == json["rol"], orElse: () => TipoUsuario.cliente),
-    );
+        id: json["id"],
+        nombre: json["nombre"],
+        apellido: json["apellido"],
+        email: json["username"],
+        sexo: json["sexo"] == 'femenino' ? Genero.femenino : Genero.masculino,
+        fechaNacimiento: json["fecha_nacimiento"] is String
+            ? DateTime.parse(json["fecha_nacimiento"])
+            : json["fecha_nacimiento"],
+        telefono: json["telefono"],
+        role: TipoUsuario.values.firstWhere(
+            (val) => val.toString() == json["role"],
+            orElse: () => TipoUsuario.cliente),
+        specialty: json['especialidad'],
+        sportsTag: json['deporte_tag']);
   }
+
+  @override
   Map<String, dynamic> toJson() => {
-        "id": id,
         "nombre": nombre,
         "apellido": apellido,
-        "email": email,
-        "genero": genero,
-        "fechaNacimiento": fechaNacimiento,
+        "username": email,
+        "sexo": sexo.name,
+        "fecha_nacimiento": fechaNacimiento.toIso8601String().split('T').first,
         "telefono": telefono,
-        "rol": rol,
+        "role": role.name,
+        "password": password,
+        "especialidad": specialty.name,
+        "deporte_tag": sportsTag,
       };
 }
-
-enum Genero { masculino, femenino }
 
 enum TipoProfesional { entrenador, nutricionista }

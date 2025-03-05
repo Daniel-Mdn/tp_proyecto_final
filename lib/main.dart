@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/config/api_contants.dart';
 import 'package:tp_proyecto_final/helpers/app_material_theme.dart';
 import 'package:tp_proyecto_final/model/exercise_model.dart';
+import 'package:tp_proyecto_final/model/profesional_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/screens/complete_registration_page.dart';
 import 'package:tp_proyecto_final/screens/create_routine_page.dart';
@@ -24,11 +25,12 @@ import 'package:tp_proyecto_final/services/user_provider.dart';
 bool _splashShown = false;
 
 void main() {
-  final dio = Dio(BaseOptions(baseUrl: ApiConstants.baseUrl, headers: {
-    'Content-Type': 'application/json',
-  }, extra: {
-    'withCredentials': true
-  }));
+  final dio = Dio(BaseOptions(
+    baseUrl: ApiConstants.baseUrl,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  ));
   final storageService = StorageService();
   final authService = AuthService(storageService: storageService, dio: dio);
   dio.interceptors.add(AuthInterceptor(authService: authService));
@@ -39,9 +41,9 @@ void main() {
         // Provee el SearchProvider parametrizado para User
         ChangeNotifierProvider<AuthService>(create: (_) => authService),
         ChangeNotifierProvider(create: (_) => SearchProvider<UserModel>()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider(dio: dio)),
         ChangeNotifierProvider(create: (_) => SearchProvider<Exercise>()),
-        ChangeNotifierProvider(create: (_) => ExerciseProvider()),
+        ChangeNotifierProvider(create: (_) => ExerciseProvider(dio: dio)),
       ],
       child: MyApp(),
     ),
@@ -86,8 +88,15 @@ class MyApp extends StatelessWidget {
           } else {
             final TipoUsuario selectedRole =
                 (state.extra! as Set).first as TipoUsuario;
+            final Map<String, dynamic> formData = (state.extra! as Set)
+                .firstWhere((element) => element is Map<String, dynamic>);
+            final TipoProfesional specialty = (state.extra! as Set)
+                .firstWhere((element) => element is TipoProfesional);
 
-            return CompleteRegistrationPage(selectedRole: selectedRole);
+            return CompleteRegistrationPage(
+                selectedRole: selectedRole,
+                formData: formData,
+                specialty: specialty);
           }
         },
       ),

@@ -7,14 +7,13 @@ class SearchWithAutocompleteInput<T extends Object> extends StatefulWidget {
   final String Function(T)
       displayStringForOption; // Para mostrar el objeto como String
 
-  SearchWithAutocompleteInput(
-      {Key? key,
+  const SearchWithAutocompleteInput(
+      {super.key,
       required this.fetchFunction,
-      required this.displayStringForOption})
-      : super(key: key);
+      required this.displayStringForOption});
 
   @override
-  _SearchWithAutocompleteInputState<T> createState() =>
+  State<SearchWithAutocompleteInput<T>> createState() =>
       _SearchWithAutocompleteInputState<T>();
 }
 
@@ -47,12 +46,8 @@ class _SearchWithAutocompleteInputState<T extends Object>
     return Autocomplete<T>(
       optionsBuilder: (TextEditingValue textEditingValue) async {
         // Actualiza las sugerencias en el provider
-        print('textEditingValue.text');
-        print(textEditingValue.text);
         searchProvider.onSearchChanged(
             textEditingValue.text, widget.fetchFunction);
-        print('searchProvider.suggestions');
-        print(searchProvider.suggestions);
         return searchProvider.suggestions;
       },
       displayStringForOption: widget.displayStringForOption,

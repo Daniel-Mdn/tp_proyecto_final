@@ -6,10 +6,10 @@ import 'package:tp_proyecto_final/services/search_provider.dart';
 import 'package:tp_proyecto_final/widgets/search_with_autocomplete.dart';
 
 class ExerciseSelectionModal extends StatefulWidget {
-  const ExerciseSelectionModal({Key? key}) : super(key: key);
+  const ExerciseSelectionModal({super.key});
 
   @override
-  _ExerciseSelectionModalState createState() => _ExerciseSelectionModalState();
+  State<ExerciseSelectionModal> createState() => _ExerciseSelectionModalState();
 }
 
 class _ExerciseSelectionModalState extends State<ExerciseSelectionModal> {
@@ -50,8 +50,7 @@ class _ExerciseSelectionModalState extends State<ExerciseSelectionModal> {
                         child: Text("No se encontraron resultados"));
                   }
                   return Expanded(
-                      child: Container(
-                          child: ListView.separated(
+                      child: ListView.separated(
                     itemCount: searchProvider.suggestions.length,
                     itemBuilder: (context, index) {
                       final exercise = searchProvider.suggestions[index];
@@ -64,7 +63,6 @@ class _ExerciseSelectionModalState extends State<ExerciseSelectionModal> {
                         onTap: () {
                           // Acción al seleccionar un ítem del listado
                           Navigator.pop<Exercise>(context, exercise);
-                          print("Seleccionado: $exercise");
                         },
                       );
                     },
@@ -73,7 +71,7 @@ class _ExerciseSelectionModalState extends State<ExerciseSelectionModal> {
                         height: 1,
                       );
                     },
-                  )));
+                  ));
                 },
               ),
             ],
