@@ -29,7 +29,7 @@ class Routine {
       duration: json["duracion"],
       difficulty: json["dificultad"],
       description: json["descripcion"],
-      days: json["dias"],
+      days: json["esquema"],
     );
   }
 
@@ -39,7 +39,7 @@ class Routine {
         'duracion': duration,
         'dificultad': difficulty,
         'descripcion': description,
-        'dias': days.map((day) => day.toJson()).toList(),
+        'esquema': days.map((day) => day.toJson()).toList(),
       };
 }
 

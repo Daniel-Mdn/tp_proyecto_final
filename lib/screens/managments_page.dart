@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/routine_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
@@ -25,14 +26,16 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
   @override
   void initState() {
     super.initState();
-    var routineProvider = RoutineProvider();
-    futureRoutinesList = routineProvider.getRoutines();
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final routineProvider =
+        Provider.of<RoutineProvider>(context, listen: false);
+    futureRoutinesList = routineProvider.getRoutines();
+
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLowest,
       appBar: const AppBarWidget(),
@@ -51,7 +54,6 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
             FutureBuilder(
                 future: futureRoutinesList,
                 builder: (context, snapshot) {
-                  
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {

@@ -71,6 +71,24 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  Future<bool> isJwtExpired() async {
+    try {
+      final token = await getTokenDecoded();
+      if (token == null) {
+        throw Exception('Token inválido');
+      }
+      final exp = token.exp;
+
+      final now = DateTime.now().millisecondsSinceEpoch ~/
+          1000; // Tiempo actual en segundos
+
+      return now >= exp; // Retorna true si el token está vencido
+    } catch (e) {
+      print('Error al decodificar el token: $e');
+      return true; // Si hay un error, asumimos que está vencido
+    }
+  }
+
   /// Método para iniciar sesión
 
   Future<bool> login(String email, String password) async {

@@ -27,26 +27,23 @@ class ExerciseProvider extends ChangeNotifier {
   }
 
   Future<List<Exercise>> getExercises([String? query]) async {
-    final response =
-        await http.get(Uri.parse('./assets/mockup_data/ejercicios.json'));
+    final response = await dio.get('/ejercicio/getAll');
+
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       try {
-        var exerciseList = exerciseFromJson(response.body);
-        print('exerciseList');
-        print(exerciseList);
+        var exerciseList = exerciseFromJson(response.data);
 
         if (query != null) {
           exerciseList = exerciseList
               .where((user) =>
                   user.name.toLowerCase().contains(query.toLowerCase()))
               .toList();
-          print('exerciseList query');
-          print(exerciseList);
         }
         return exerciseList;
       } catch (e) {
+        print(e);
         return [];
       }
     } else {

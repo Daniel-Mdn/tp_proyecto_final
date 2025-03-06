@@ -17,6 +17,7 @@ import 'package:tp_proyecto_final/screens/managments_page.dart';
 import 'package:tp_proyecto_final/screens/register_page.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/exercise_provider.dart';
+import 'package:tp_proyecto_final/services/routine_provider.dart';
 import 'package:tp_proyecto_final/services/search_provider.dart';
 import 'package:tp_proyecto_final/services/storage_service.dart';
 import 'package:tp_proyecto_final/services/user_provider.dart';
@@ -44,6 +45,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => UserProvider(dio: dio)),
         ChangeNotifierProvider(create: (_) => SearchProvider<Exercise>()),
         ChangeNotifierProvider(create: (_) => ExerciseProvider(dio: dio)),
+        ChangeNotifierProvider(create: (_) => RoutineProvider(dio: dio)),
       ],
       child: MyApp(),
     ),
@@ -166,13 +168,16 @@ class _SplashPageState extends State<SplashPage> {
     await Future.delayed(splashDuration);
     _splashShown = true;
 
-    final token = await authService.getToken();
+    try {
+      final expiredToken = await authService.isJwtExpired();
 
-    if (token != null) {
-      // Si hay token, navega a home
-      if (mounted) context.go('/home');
-    } else {
-      // Si no hay token, navega a login
+      if (expiredToken) {
+        if (mounted) context.go('/login');
+      } else {
+        if (mounted) context.go('/home');
+        // Si no hay token, navega a login
+      }
+    } catch (e) {
       if (mounted) context.go('/login');
     }
   }

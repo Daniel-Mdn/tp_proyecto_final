@@ -18,7 +18,7 @@ class Exercise {
       id: json["id"],
       name: json["nombre"],
       description: json["descripcion"],
-      muscleGroup: json["grupo_musculares"],
+      muscleGroup: json["grupo_muscular"],
     );
   }
 
@@ -30,10 +30,11 @@ class Exercise {
       };
 }
 
-List<Exercise> exerciseFromJson(String str) =>
-    List<Exercise>.from((json.decode(str) as List<dynamic>).map((x) {
-      return Exercise.fromJson(x);
-    }));
+List<Exercise> exerciseFromJson(List<dynamic> list) {
+  return List<Exercise>.from(list.map((x) {
+    return Exercise.fromJson(x);
+  }));
+}
 
 class ExerciseDay {
   int? id;
