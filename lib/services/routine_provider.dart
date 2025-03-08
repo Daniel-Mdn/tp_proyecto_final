@@ -1,40 +1,41 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:tp_proyecto_final/model/routine_model.dart';
 
 class RoutineProvider extends ChangeNotifier {
   final Dio dio;
   RoutineProvider({required this.dio});
 
-  Future<Routine> getRoutine() async {
-    final response =
-        await http.get(Uri.parse('./assets/mockup_data/users.json'));
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      var usersList = Routine.fromJson(jsonDecode(response.body)[
-          0]); //corregir cuando haya un endpoint que devuelva la info de un solo usuario
-      return usersList;
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load users');
-    }
-  }
+  Future<Routine> getRoutine(int id) async {
+    final response = await dio.get('/rutina/get/$id');
 
-  Future<List<Routine>> getRoutines([String? query]) async {
-    final response =
-        await http.get(Uri.parse('./assets/mockup_data/rutinas.json'));
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       try {
-        var routineList = routineFromJson(response.body);
-        print('routineList');
-        print(routineList);
+        var routine = Routine.fromJson(response.data);
+
+        return routine;
+      } catch (e) {
+        print('e in getRoutine $e');
+        throw Exception('Failed to load routine');
+      }
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load routine');
+    }
+  }
+
+  Future<List<Routine>> getRoutinesProfesionalUser([String? query]) async {
+    final response = await dio.get('/rutina/getRutinasProfesional');
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      try {
+        var routineList = routineFromJson(response.data);
 
         if (query != null) {
           routineList = routineList
@@ -46,6 +47,7 @@ class RoutineProvider extends ChangeNotifier {
         }
         return routineList;
       } catch (e) {
+        print('e in getRoutinesProfesionalUser $e');
         return [];
       }
     } else {

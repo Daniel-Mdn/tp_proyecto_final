@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/routine_model.dart';
-import 'package:tp_proyecto_final/model/user_model.dart';
-import 'package:tp_proyecto_final/services/auth_service.dart';
 import 'package:tp_proyecto_final/services/routine_provider.dart';
-import 'package:tp_proyecto_final/services/storage_service.dart';
-import 'package:tp_proyecto_final/services/user_provider.dart';
 import 'package:tp_proyecto_final/widgets/app_bar_widget.dart';
 import 'package:tp_proyecto_final/widgets/bottom_navigator_widget.dart';
 import 'package:tp_proyecto_final/widgets/drawer_widget.dart';
@@ -34,7 +30,7 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
     final ColorScheme colorScheme = theme.colorScheme;
     final routineProvider =
         Provider.of<RoutineProvider>(context, listen: false);
-    futureRoutinesList = routineProvider.getRoutines();
+    futureRoutinesList = routineProvider.getRoutinesProfesionalUser();
 
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLowest,
@@ -55,9 +51,9 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
                 future: futureRoutinesList,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text("Error loading routines"));
+                    return const Center(child: Text("Error loading routines"));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return SectionCard(
                         title: "Rutinas",
@@ -68,61 +64,93 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
                         });
                   }
                   final routines = snapshot.data!;
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: routines.length,
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final routine = routines[index];
-
-                      return Padding(
-                        padding: EdgeInsets.only(right: 12.0),
-                        child: Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: SizedBox(
-                            width: 160,
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    routine.name,
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    "⏳ ${routine.duration} min | 🎯 ${routine.objective}",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 8),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    ),
-                                    child: Text("View"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+                        child: Text(
+                          "Tus Rutinas",
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
-                      );
-                    },
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 16.0),
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: routines.length,
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final routine = routines[index];
+
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: SizedBox(
+                                  width: 160,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Image.asset(
+                                            'assets/imgs/without_img.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Text(
+                                          routine.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "⏳ ${routine.duration} min | 🎯 ${routine.objective}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Center(
+                                          child: FilledButton(
+                                            onPressed: () {
+                                              context.go(
+                                                  '/gestiones/rutina/detalles',
+                                                  extra: {routine.id});
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8, vertical: 4),
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .labelMedium,
+                                            ),
+                                            child: const Text("Ver detalles"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 }),
             SectionCard(

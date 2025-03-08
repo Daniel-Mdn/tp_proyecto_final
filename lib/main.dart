@@ -8,6 +8,7 @@ import 'package:tp_proyecto_final/model/exercise_model.dart';
 import 'package:tp_proyecto_final/model/profesional_model.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/screens/complete_registration_page.dart';
+import 'package:tp_proyecto_final/screens/view_routine_page.dart';
 import 'package:tp_proyecto_final/screens/create_routine_page.dart';
 import 'package:tp_proyecto_final/screens/equips_page.dart';
 import 'package:tp_proyecto_final/screens/home_page.dart';
@@ -113,6 +114,21 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'rutina',
             builder: (context, state) => const CreateRoutinePage(),
+          ),
+          GoRoute(
+            path: 'rutina/detalles',
+            builder: (context, state) {
+              if (state.extra == null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  context.go('/gestiones');
+                });
+                return const SizedBox
+                    .shrink(); // Evita que se renderice una pantalla vacía momentáneamente
+              } else {
+                final int idRoutine = (state.extra! as Set).first as int;
+                return ViewRoutinePage(routineId: idRoutine);
+              }
+            },
           ),
         ],
       ),

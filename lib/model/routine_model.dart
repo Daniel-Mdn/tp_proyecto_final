@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:tp_proyecto_final/model/exercise_model.dart';
 
 class Routine {
@@ -29,7 +27,7 @@ class Routine {
       duration: json["duracion"],
       difficulty: json["dificultad"],
       description: json["descripcion"],
-      days: json["esquema"],
+      days: routineDayFromJson(json["esquema"] ?? []),
     );
   }
 
@@ -43,12 +41,20 @@ class Routine {
       };
 }
 
-List<Routine> routineFromJson(String str) =>
-    List<Routine>.from((json.decode(str) as List<dynamic>).map((x) {
-      return Routine.fromJson(x);
-    }));
+List<Routine> routineFromJson(List<dynamic> list) {
+  return List<Routine>.from(list.map((x) {
+    return Routine.fromJson(x);
+  }));
+}
+
+List<RoutineDay> routineDayFromJson(List<dynamic> list) {
+  return List<RoutineDay>.from(list.map((x) {
+    return RoutineDay.fromJson(x);
+  }));
+}
 
 class RoutineDay {
+  int? id;
   int order;
   String day;
   String observations;
@@ -59,7 +65,18 @@ class RoutineDay {
     required this.day,
     required this.observations,
     required this.exercises,
+    this.id,
   });
+
+  factory RoutineDay.fromJson(Map<String, dynamic> json) {
+    return RoutineDay(
+      id: json["id"],
+      observations: json["observaciones"],
+      day: json["dia"] ?? "",
+      order: json["orden"],
+      exercises: exerciseDayFromJson(json["ejercicios"] ?? []),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'orden': order,

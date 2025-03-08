@@ -34,7 +34,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json["id"],
+      id: json["id"] ?? 0,
       nombre: json["nombre"],
       apellido: json["apellido"],
       email: json["username"],
@@ -44,7 +44,7 @@ class UserModel {
           : json["fecha_nacimiento"],
       telefono: json["telefono"],
       role: TipoUsuario.values.firstWhere(
-          (val) => val.toString() == json["role"],
+          (val) => val.name == json["role"],
           orElse: () => TipoUsuario.cliente),
     );
   }
@@ -58,7 +58,6 @@ class UserModel {
       "fecha_nacimiento": fechaNacimiento.toIso8601String().split('T').first,
       "telefono": telefono,
       "role": role.name,
-      "password": password
     };
   }
 }

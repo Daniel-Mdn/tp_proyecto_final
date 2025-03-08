@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/user_model.dart';
 import 'package:tp_proyecto_final/services/auth_service.dart';
-import 'package:tp_proyecto_final/services/storage_service.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -13,13 +12,13 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  late Future<UserModel> userLogged;
+  late Future<UserModel?> userLogged;
 
   @override
   void initState() {
     super.initState();
     final authService = Provider.of<AuthService>(context, listen: false);
-    userLogged = authService.getUserLogger();
+    userLogged = authService.getUserSaved();
   }
 
   @override
@@ -30,7 +29,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       child: ListView(
         padding: EdgeInsets.zero, // Importante remover el padding
         children: <Widget>[
-          FutureBuilder<UserModel>(
+          FutureBuilder<UserModel?>(
             future: userLogged,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {

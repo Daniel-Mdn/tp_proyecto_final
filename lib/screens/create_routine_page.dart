@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:tp_proyecto_final/model/exercise_model.dart';
 import 'package:tp_proyecto_final/model/routine_model.dart';
+import 'package:tp_proyecto_final/services/routine_provider.dart';
 import 'package:tp_proyecto_final/widgets/bottom_navigator_widget.dart';
 import 'package:tp_proyecto_final/widgets/custom_text_fields.dart';
 import 'package:tp_proyecto_final/widgets/exercise_form_modal.dart';
@@ -39,7 +42,10 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
     });
   }
 
-  void _createRoutine() {
+  Future<void> _createRoutine() async {
+    final routineProvider =
+        Provider.of<RoutineProvider>(context, listen: false);
+
     if (_nameController.text.isEmpty ||
         _objectiveController.text.isEmpty ||
         _durationController.text.isEmpty ||
@@ -62,9 +68,17 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
       days: routineDays,
     );
 
-    final routineJson = routine.toJson();
-    print("Rutina a enviar: $routineJson");
-
+    final response = await routineProvider.createRoutine(routine);
+    if (response) {
+      var snackbar = ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Registro completado')),
+      );
+      snackbar.closed.whenComplete(() => context.go('/gestiones'));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error creando rutina')),
+      );
+    }
     // Aquí se enviaría la rutina a la API
   }
 
@@ -166,7 +180,7 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
                               final exercise = day.exercises[exIndex];
                               return ListTile(
                                 title: Text(
-                                  exercise.exerciseData.name,
+                                  exercise.exerciseData!.name,
                                   style: theme.textTheme.bodyLarge!.copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: colorScheme.onSurface),

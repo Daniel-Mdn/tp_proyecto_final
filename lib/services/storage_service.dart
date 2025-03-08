@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,23 +15,22 @@ class StorageService {
     }
   }
 
-
-  Future<String?> read(String key) async {
+  Future<String?> read(LocalStorageKeys key) async {
     if (kIsWeb) {
       final prefs = await SharedPreferences.getInstance();
-      return prefs.getString(key);
+      return prefs.getString(key.name);
     } else {
-      return await _storage.read(key: key);
+      return await _storage.read(key: key.name);
     }
   }
 
-  Future<bool> write(String key, String data) async {
+  Future<bool> write(LocalStorageKeys key, String data) async {
     if (kIsWeb) {
       final prefs = await SharedPreferences.getInstance();
-      return prefs.setString(key, data);
+      return prefs.setString(key.name, data);
     } else {
       await _storage.write(
-        key: key,
+        key: key.name,
         value: data,
       );
       return true;
@@ -41,13 +38,15 @@ class StorageService {
   }
 
   /// Cierra sesión eliminando el token
-  Future<bool> delete(String key) async {
+  Future<bool> delete(LocalStorageKeys key) async {
     if (kIsWeb) {
       final prefs = await SharedPreferences.getInstance();
-      return prefs.remove(key);
+      return prefs.remove(key.name);
     } else {
-      await _storage.delete(key: 'jwt_token');
+      await _storage.delete(key: key.name);
       return true;
     }
   }
 }
+
+enum LocalStorageKeys { jwtToken, user }

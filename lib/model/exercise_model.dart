@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Exercise {
   int id;
   String name;
@@ -39,12 +37,13 @@ List<Exercise> exerciseFromJson(List<dynamic> list) {
 class ExerciseDay {
   int? id;
   int exerciseId;
+  String? exerciseName;
   String? observations;
   int sets;
   int repetitions;
   double weight;
 
-  Exercise exerciseData;
+  Exercise? exerciseData;
 
   ExerciseDay({
     this.id,
@@ -52,16 +51,36 @@ class ExerciseDay {
     required this.sets,
     required this.repetitions,
     required this.weight,
-    required this.exerciseData,
+    this.exerciseData,
+    this.exerciseName,
     this.observations,
   });
+
+  factory ExerciseDay.fromJson(Map<String, dynamic> json) {
+    return ExerciseDay(
+      id: json["id"],
+      exerciseId: json["id_ejercicio"],
+      sets: json["series"],
+      repetitions: json["repeticiones"],
+      weight: json["peso"],
+      exerciseName: json["nombre_ejercicio"],
+      observations: json["observations"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'id_ejercicio': exerciseId,
+        "nombre_ejercicio": exerciseName,
         'observaciones': observations,
         'series': sets,
         'repeticiones': repetitions,
         'peso': weight,
       };
+}
+
+List<ExerciseDay> exerciseDayFromJson(List<dynamic> list) {
+  return List<ExerciseDay>.from(list.map((x) {
+    return ExerciseDay.fromJson(x);
+  }));
 }

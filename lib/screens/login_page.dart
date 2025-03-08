@@ -50,7 +50,11 @@ class _LoginPageState extends State<LoginPage> {
       });
 
       if (success) {
-        context.go("/home");
+        final userData = await authService.getUserLogged();
+        final hasSaveUser = await authService.saveUserLogged(userData);
+        if (hasSaveUser) {
+          context.go("/home");
+        }
       } else {
         setState(() {
           _errorMessage = 'Error al iniciar sesión, verifica tus credenciales.';

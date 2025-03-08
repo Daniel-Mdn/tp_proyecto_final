@@ -25,7 +25,7 @@ class AuthService extends ChangeNotifier {
     return resp;
   }
 
-  Future<UserModel> getUserLogger() async {
+  Future<UserModel> getUserLogged() async {
     try {
       final response = await dio.get(
         '/usuario/get',
@@ -47,10 +47,39 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  Future<bool> saveUserLogged(UserModel userData) async {
+    try {
+      final result = await storageService.write(
+        LocalStorageKeys.user,
+        jsonEncode(userData.toJson()),
+      );
+      return result;
+    } catch (e) {
+      print('e in saveUserLogger $e');
+      throw Exception('Failed to save User Logged');
+    }
+  }
+
+  Future<UserModel?> getUserSaved() async {
+    try {
+      final String? userString =
+          await storageService.read(LocalStorageKeys.user);
+      if (userString != null) {
+        print(jsonDecode(userString));
+      }
+      return userString != null
+          ? UserModel.fromJson(jsonDecode(userString))
+          : null;
+    } catch (e) {
+      print('e in getUserSaved $e');
+      throw Exception('Failed to get User saved');
+    }
+  }
+
   /// Recupera el token almacenado
   Future<String?> getToken() async {
     try {
-      var token = await storageService.read('jwt_token');
+      var token = await storageService.read(LocalStorageKeys.jwtToken);
       return token;
     } catch (e) {
       print('e in getToken $e');
@@ -60,7 +89,7 @@ class AuthService extends ChangeNotifier {
 
   Future<JwtPayload?> getTokenDecoded() async {
     try {
-      var token = await storageService.read('jwt_token');
+      var token = await storageService.read(LocalStorageKeys.jwtToken);
       if (token != null) {
         return JwtPayload.fromToken(token);
       }
@@ -109,7 +138,7 @@ class AuthService extends ChangeNotifier {
         if (token != null) {
           // Almacena el token de forma segura
           final result = await storageService.write(
-            'jwt_token',
+            LocalStorageKeys.jwtToken,
             token,
           );
           return result;
@@ -125,7 +154,10 @@ class AuthService extends ChangeNotifier {
   /// Cierra sesión eliminando el token
   Future<bool> logout(BuildContext context) async {
     try {
-      return storageService.delete('jwt_token');
+      final deleteToken =
+          await storageService.delete(LocalStorageKeys.jwtToken);
+      final deleteUser = await storageService.delete(LocalStorageKeys.user);
+      return deleteToken && deleteUser;
     } catch (e) {
       print('e in logout $e');
       return false;
@@ -141,7 +173,7 @@ class AuthService extends ChangeNotifier {
         if (token != null) {
           // Almacena el token de forma segura
           final result = await storageService.write(
-            'jwt_token',
+            LocalStorageKeys.jwtToken,
             token,
           );
           return result;
