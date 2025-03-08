@@ -30,7 +30,7 @@ class _ViewRoutinePageState extends State<ViewRoutinePage> {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: colorScheme.surfaceContainerLowest,
-      appBar: AppBar(title: const Text("Ver rutina")),
+      appBar: AppBar(title: const Text("Detalles rutina")),
       body: FutureBuilder<Routine>(
         future: futureRoutine,
         builder: (context, snapshot) {
@@ -49,12 +49,12 @@ class _ViewRoutinePageState extends State<ViewRoutinePage> {
               children: [
                 // Título y descripción de la rutina
                 Text(
-                  routine.name,
+                  'Nombre de la rutina: ${routine.name}',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  routine.description,
+                  'Descripcion: ${routine.description}',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 16),
@@ -87,22 +87,41 @@ class _ViewRoutinePageState extends State<ViewRoutinePage> {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 12.0),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // Encabezado del día
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  day.day,
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
+
+                            ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(12)),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: colorScheme.secondaryContainer,
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: colorScheme.outlineVariant,
+                                            width: 2))),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(day.day ?? 'dia ${index + 1}',
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold)),
+                                        Text(
+                                            "Ejercicios: ${day.exercises.length}"),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                Text("Ejercicios: ${day.exercises.length}"),
-                              ],
+                              ),
                             ),
                             const SizedBox(height: 8),
                             // Listado de ejercicios del día

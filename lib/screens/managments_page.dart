@@ -69,9 +69,19 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-                        child: Text(
-                          "Tus Rutinas",
-                          style: Theme.of(context).textTheme.titleLarge,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Tus Rutinas",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            FilledButton(
+                                onPressed: () {
+                                  GoRouter.of(context).go('/gestiones/rutina');
+                                },
+                                child: const Text('Crear nueva rutina')),
+                          ],
                         ),
                       ),
                       Container(
@@ -132,8 +142,10 @@ class _ManagmentsPageState extends State<ManagmentsPage> {
                                                   extra: {routine.id});
                                             },
                                             style: ElevatedButton.styleFrom(
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 8, vertical: 4),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 4),
                                               textStyle: Theme.of(context)
                                                   .textTheme
                                                   .labelMedium,
