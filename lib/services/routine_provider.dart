@@ -42,8 +42,6 @@ class RoutineProvider extends ChangeNotifier {
               .where((user) =>
                   user.name.toLowerCase().contains(query.toLowerCase()))
               .toList();
-          print('routineList query');
-          print(routineList);
         }
         return routineList;
       } catch (e) {

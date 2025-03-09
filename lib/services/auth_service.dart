@@ -64,9 +64,6 @@ class AuthService extends ChangeNotifier {
     try {
       final String? userString =
           await storageService.read(LocalStorageKeys.user);
-      if (userString != null) {
-        print(jsonDecode(userString));
-      }
       return userString != null
           ? UserModel.fromJson(jsonDecode(userString))
           : null;
