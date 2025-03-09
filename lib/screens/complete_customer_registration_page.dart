@@ -58,14 +58,18 @@ class _CompleteCustomerRegistrationPageState
 
           final response = await authProvider.createUser(body);
           if (response) {
-            var snackbar = ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Registro completado')),
-            );
-            snackbar.closed.whenComplete(() => context.go('/home'));
+            if (mounted) {
+              var snackbar = ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Registro completado')),
+              );
+              snackbar.closed.whenComplete(() => context.go('/home'));
+            }
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Error creando el usuario')),
-            );
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Error creando el usuario')),
+              );
+            }
           }
         } catch (e) {
           print('e in _updateUser $e');
@@ -77,143 +81,170 @@ class _CompleteCustomerRegistrationPageState
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainerLowest,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 16),
-              Image.asset(
-                'assets/imgs/logo.png',
-                fit: BoxFit.cover,
-                width: 60,
-                height: 60,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Completa las siguientes preguntas para empezar a entrenar!',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-
-              // Pregunta 1: Objetivo
-              _buildQuestionCard(
-                title: '¿Cuáles son los objetivos que más se ajustan a vos?',
-                child: Column(
-                  children: [
-                    _buildRadioOption(
-                        'Tonificar mi cuerpo', _objectiveController),
-                    _buildRadioOption(
-                        'Ganar estado físico', _objectiveController),
-                    _buildRadioOption('Bajar peso', _objectiveController),
-                    if (_submitted && _objectiveController.text.isEmpty)
-                      _buildErrorText('Debes seleccionar un objetivo'),
-                  ],
-                ),
-              ),
-
-              // Pregunta 2: Tipo de entrenamiento
-              _buildQuestionCard(
-                title: '¿Qué tipo de entrenamiento te interesa?',
-                child: Column(
-                  children: [
-                    _buildRadioOption(
-                        'Entrenamiento gimnasio', _trainingTypeController,
-                        resetSports: true),
-                    _buildRadioOption(
-                        'Entrenamiento deportivo', _trainingTypeController,
-                        resetSports: false),
-                    if (_submitted && _trainingTypeController.text.isEmpty)
-                      _buildErrorText(
-                          'Debes seleccionar un tipo de entrenamiento'),
-                    if (_trainingTypeController.text ==
-                        'Entrenamiento deportivo') ...[
-                      const SizedBox(height: 10),
-                      _buildSectionTitle('Seleccione un deporte'),
-                      TextFormField(
-                        controller: _sportsController,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          labelText: 'Deportes seleccionados',
-                          suffixIcon: const Icon(Icons.arrow_drop_down),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 600,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 16),
+                          Image.asset(
+                            'assets/imgs/logo.png',
+                            fit: BoxFit.cover,
+                            width: 60,
+                            height: 60,
                           ),
-                        ),
-                        onTap: () async {
-                          final List<String>? selectedSports =
-                              await showDialog<List<String>>(
-                            context: context,
-                            builder: (context) {
-                              return MultiSelectDialog(
-                                items: deportes
-                                    .map((deporte) =>
-                                        MultiSelectItem(deporte, deporte))
-                                    .toList(),
-                                initialValue: deportesSeleccionados,
-                                title: const Text("Seleccione deportes"),
-                                onConfirm: (values) {
-                                  setState(() {
-                                    deportesSeleccionados =
-                                        List<String>.from(values);
-                                    _sportsController.text =
-                                        deportesSeleccionados.join(', ');
-                                  });
-                                },
-                              );
-                            },
-                          );
-                          print(selectedSports);
-                          setState(() {});
-                        },
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Completa las siguientes preguntas para empezar a entrenar!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Pregunta 1: Objetivo
+                          _buildQuestionCard(
+                            title:
+                                '¿Cuáles son los objetivos que más se ajustan a vos?',
+                            child: Column(
+                              children: [
+                                _buildRadioOption('Tonificar mi cuerpo',
+                                    _objectiveController),
+                                _buildRadioOption('Ganar estado físico',
+                                    _objectiveController),
+                                _buildRadioOption(
+                                    'Bajar peso', _objectiveController),
+                                if (_submitted &&
+                                    _objectiveController.text.isEmpty)
+                                  _buildErrorText(
+                                      'Debes seleccionar un objetivo'),
+                              ],
+                            ),
+                          ),
+
+                          // Pregunta 2: Tipo de entrenamiento
+                          _buildQuestionCard(
+                            title: '¿Qué tipo de entrenamiento te interesa?',
+                            child: Column(
+                              children: [
+                                _buildRadioOption('Entrenamiento gimnasio',
+                                    _trainingTypeController,
+                                    resetSports: true),
+                                _buildRadioOption('Entrenamiento deportivo',
+                                    _trainingTypeController,
+                                    resetSports: false),
+                                if (_submitted &&
+                                    _trainingTypeController.text.isEmpty)
+                                  _buildErrorText(
+                                      'Debes seleccionar un tipo de entrenamiento'),
+                                if (_trainingTypeController.text ==
+                                    'Entrenamiento deportivo') ...[
+                                  const SizedBox(height: 10),
+                                  _buildSectionTitle('Seleccione un deporte'),
+                                  TextFormField(
+                                    controller: _sportsController,
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      labelText: 'Deportes seleccionados',
+                                      suffixIcon:
+                                          const Icon(Icons.arrow_drop_down),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      await showDialog<List<String>>(
+                                        context: context,
+                                        builder: (context) {
+                                          return MultiSelectDialog(
+                                            items: deportes
+                                                .map((deporte) =>
+                                                    MultiSelectItem(
+                                                        deporte, deporte))
+                                                .toList(),
+                                            initialValue: deportesSeleccionados,
+                                            title: const Text(
+                                                "Seleccione deportes"),
+                                            onConfirm: (values) {
+                                              setState(() {
+                                                deportesSeleccionados =
+                                                    List<String>.from(values);
+                                                _sportsController.text =
+                                                    deportesSeleccionados
+                                                        .join(', ');
+                                              });
+                                            },
+                                          );
+                                        },
+                                      );
+                                      setState(() {});
+                                    },
+                                  ),
+                                  if (_submitted &&
+                                      deportesSeleccionados.isEmpty)
+                                    _buildErrorText(
+                                        'Debes seleccionar al menos un deporte'),
+                                ],
+                              ],
+                            ),
+                          ),
+
+                          // Pregunta 3: Tiempo de dedicación
+                          _buildQuestionCard(
+                            title: '¿Cuánto tiempo piensas dedicar?',
+                            child: Column(
+                              children: [
+                                _buildRadioOption('1 día a la semana',
+                                    _timeDedicationController),
+                                _buildRadioOption('2 a 3 días a la semana',
+                                    _timeDedicationController),
+                                _buildRadioOption(
+                                    'Más de 3 días', _timeDedicationController),
+                                if (_submitted &&
+                                    _timeDedicationController.text.isEmpty)
+                                  _buildErrorText(
+                                      'Debes seleccionar un tiempo de dedicación'),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      if (_submitted && deportesSeleccionados.isEmpty)
-                        _buildErrorText(
-                            'Debes seleccionar al menos un deporte'),
-                    ],
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-
-              // Pregunta 3: Tiempo de dedicación
-              _buildQuestionCard(
-                title: '¿Cuánto tiempo piensas dedicar?',
-                child: Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildRadioOption(
-                        '1 día a la semana', _timeDedicationController),
-                    _buildRadioOption(
-                        '2 a 3 días a la semana', _timeDedicationController),
-                    _buildRadioOption(
-                        'Más de 3 días', _timeDedicationController),
-                    if (_submitted && _timeDedicationController.text.isEmpty)
-                      _buildErrorText(
-                          'Debes seleccionar un tiempo de dedicación'),
+                    OutlinedButton(
+                      onPressed: () => context.go('/login'),
+                      child: const Text('Volver al login'),
+                    ),
+                    FilledButton(
+                      onPressed: _updateUser,
+                      child: const Text('Crear Cuenta'),
+                    ),
                   ],
                 ),
-              ),
-
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  OutlinedButton(
-                    onPressed: () => context.go('/login'),
-                    child: const Text('Volver al login'),
-                  ),
-                  FilledButton(
-                    onPressed: _updateUser,
-                    child: const Text('Crear Cuenta'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

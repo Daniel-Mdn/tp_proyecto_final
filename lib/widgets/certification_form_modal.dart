@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tp_proyecto_final/model/certification_form_model.dart';
 import 'package:tp_proyecto_final/widgets/custom_text_fields.dart';
 
-Future<CertificationForm?> showCertificationFormModal(
-    BuildContext context) async {
+Future<CertificationForm?> showCertificationFormModal(BuildContext context,
+    [CertificationForm? initialData]) async {
   return await showModalBottomSheet<CertificationForm>(
     context: context,
     isScrollControlled: true,
@@ -18,14 +18,18 @@ Future<CertificationForm?> showCertificationFormModal(
           bottom: MediaQuery.of(context).viewInsets.bottom + 16,
           top: 16,
         ),
-        child: const CertificationFormWidget(),
+        child: CertificationFormWidget(
+          initialData: initialData,
+        ),
       );
     },
   );
 }
 
 class CertificationFormWidget extends StatefulWidget {
-  const CertificationFormWidget({super.key});
+  final CertificationForm? initialData;
+
+  const CertificationFormWidget({super.key, this.initialData});
 
   @override
   State<CertificationFormWidget> createState() =>
@@ -42,6 +46,20 @@ class _CertificationFormWidgetState extends State<CertificationFormWidget> {
   DateTime? _endDate;
   bool _inProgress = false;
   String? _experienceType;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialData != null) {
+      _titleController.text = widget.initialData!.title;
+      _descriptionController.text = widget.initialData!.description;
+      _institutionController.text = widget.initialData!.institution;
+      _startDate = widget.initialData!.startDate;
+      _endDate = widget.initialData!.endDate;
+      _inProgress = widget.initialData!.inProgress;
+      _experienceType = widget.initialData!.experienceType;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,13 +154,12 @@ class _CertificationFormWidgetState extends State<CertificationFormWidget> {
 
           const SizedBox(height: 10),
 
-          // Botón de subir archivo (ejemplo)
-          FilledButton.icon(
-            onPressed: () {},
-            style: const ButtonStyle(alignment: Alignment.centerLeft),
-            icon: const Icon(Icons.upload_file),
-            label: const Text("Subir archivo"),
-          ),
+          // FilledButton.icon(
+          //   onPressed: () {},
+          //   style: const ButtonStyle(alignment: Alignment.centerLeft),
+          //   icon: const Icon(Icons.upload_file),
+          //   label: const Text("Subir archivo"),
+          // ),
 
           const SizedBox(height: 20),
 

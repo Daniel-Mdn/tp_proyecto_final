@@ -104,7 +104,7 @@ class AuthService extends ChangeNotifier {
     try {
       final token = await getTokenDecoded();
       if (token == null) {
-        throw Exception('Token inválido');
+        throw Exception('Token expirado');
       }
       final exp = token.exp;
 

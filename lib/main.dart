@@ -93,8 +93,9 @@ class MyApp extends StatelessWidget {
                 (state.extra! as Set).first as TipoUsuario;
             final Map<String, dynamic> formData = (state.extra! as Set)
                 .firstWhere((element) => element is Map<String, dynamic>);
-            final TipoProfesional specialty = (state.extra! as Set)
-                .firstWhere((element) => element is TipoProfesional);
+            final TipoProfesional? specialty = (state.extra! as Set).firstWhere(
+                (element) => element is TipoProfesional,
+                orElse: () => null);
 
             return CompleteRegistrationPage(
                 selectedRole: selectedRole,
@@ -157,6 +158,7 @@ class MyApp extends StatelessWidget {
               backgroundColor: AppMaterialTheme.surfaceColor)),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
+      locale: const Locale('es', 'ES'), // 👈 Fuerza el idioma español
     );
   }
 }

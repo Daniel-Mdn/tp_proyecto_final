@@ -169,16 +169,16 @@ class _CompleteProfesionalRegistrationPageState
                                     style: const TextStyle(
                                         fontSize: 12, color: Colors.black54),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: const Text(
-                                      "Ver Certificado",
-                                      style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () {},
+                                  //   child: const Text(
+                                  //     "Ver Certificado",
+                                  //     style: TextStyle(
+                                  //         color: Colors.blue,
+                                  //         fontSize: 12,
+                                  //         fontWeight: FontWeight.w500),
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                               isThreeLine: true,
@@ -187,12 +187,38 @@ class _CompleteProfesionalRegistrationPageState
                                 children: [
                                   IconButton(
                                     icon: const Icon(Icons.edit, size: 18),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      final updatedCert =
+                                          await showCertificationFormModal(
+                                        context,
+                                        cert,
+                                      );
+
+                                      if (updatedCert != null) {
+                                        setState(() {
+                                          certifications[index] =
+                                              updatedCert; // 🔹 Actualizamos la lista
+                                        });
+                                      }
+                                    },
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.delete,
                                         size: 18, color: Colors.red),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      bool? confirmDelete = await modalservice
+                                          .showConfirmationDialog(
+                                        context,
+                                        'Eliminar Certificación',
+                                        '¿Estás seguro de que quieres eliminar este certificado?',
+                                      );
+
+                                      if (confirmDelete == true) {
+                                        setState(() {
+                                          certifications.removeAt(index);
+                                        });
+                                      }
+                                    },
                                   ),
                                 ],
                               ));
